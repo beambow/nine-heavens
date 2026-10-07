@@ -618,3 +618,36 @@ body{-webkit-tap-highlight-color:transparent}
  .cinema{min-height:520px}
  .modal-box{max-height:calc(100dvh - 12px)}
 }
+
+
+/* =====================================================================
+   V8 GACHA UPGRADE — roulette takdir + breakthrough
+   ===================================================================== */
+.gacha-rune{position:absolute;left:50%;top:50%;width:min(58vmin,430px);height:min(58vmin,430px);transform:translate(-50%,-50%);z-index:3;pointer-events:none;opacity:.35}
+.gacha-rune i{position:absolute;inset:0;border:1px solid var(--pc,#c9a8ff);border-radius:50%;box-shadow:0 0 28px color-mix(in srgb,var(--pc,#c9a8ff) 40%,transparent),inset 0 0 28px color-mix(in srgb,var(--pc,#c9a8ff) 18%,transparent)}
+.gacha-rune i:nth-child(1){inset:8%;border-style:dashed;animation:gachaSpin 13s linear infinite}
+.gacha-rune i:nth-child(2){inset:20%;transform:rotate(45deg);border-radius:18%;animation:gachaSpin 9s linear infinite reverse}
+.gacha-rune i:nth-child(3){inset:32%;border-width:2px;animation:gachaPulse 1.2s ease-in-out infinite}
+.gacha-rune b{position:absolute;inset:0;display:grid;place-items:center;font:28px "Ma Shan Zheng",serif;color:#fff;text-shadow:0 0 18px var(--pc,#c9a8ff)}
+.ritual.stage2 .gacha-rune{opacity:.72;animation:gachaLock .9s cubic-bezier(.2,.9,.2,1) both}
+.ritual.stage3 .gacha-rune{animation:gachaBurst .75s ease-out both}
+@keyframes gachaSpin{to{transform:rotate(360deg)}}
+@keyframes gachaPulse{50%{transform:scale(1.08);opacity:.55}}
+@keyframes gachaLock{0%{transform:translate(-50%,-50%) scale(.7) rotate(-35deg);filter:blur(4px)}70%{transform:translate(-50%,-50%) scale(1.12) rotate(10deg);filter:blur(0)}100%{transform:translate(-50%,-50%) scale(1) rotate(0)}}
+@keyframes gachaBurst{0%{opacity:.8;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.8)}}
+.gacha-sparks{position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:var(--pc,#c9a8ff);box-shadow:0 0 20px var(--pc,#c9a8ff);opacity:0;z-index:5}
+.ritual.stage3 .gacha-sparks{opacity:1;animation:sparkBurst .8s ease-out forwards}
+@keyframes sparkBurst{0%{transform:translate(-50%,-50%) scale(.5);box-shadow:0 0 20px var(--pc),0 0 0 0 var(--pc)}100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 35px var(--pc),0 0 0 34vmin color-mix(in srgb,var(--pc) 25%,transparent)}}
+@media(max-width:520px){
+ .gacha-rune{width:74vmin;height:74vmin;opacity:.26}
+ .gacha-rune b{font-size:22px}
+ .ritual.on .bar{height:7vh}
+ .caption{bottom:11vh;padding:0 18px}
+ .caption b{font-size:clamp(27px,8vw,38px);letter-spacing:7px}
+ .caption small{font-size:8px;letter-spacing:4px}
+ .stage-count{font-size:15px}
+ .cinematic-skip{right:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ .gacha-rune i,.gacha-sparks{animation:none!important}
+}

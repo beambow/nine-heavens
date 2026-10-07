@@ -19,14 +19,15 @@ function startFx(best){
  const calm=ST.calm;
  rc.width=innerWidth*D;rc.height=innerHeight*D;rx.setTransform(D,0,0,D,0,0);
  const w=innerWidth,h=innerHeight,cx=w/2,cy=h/2,maxR=Math.hypot(cx,cy),mr=Math.min(w,h)*.27;
- const P=Array.from({length:calm?110:230},()=>({a:Math.random()*6.28,r:Math.random()*maxR,s:.5+Math.random()*1.5,z:Math.random()}));
+ const P=Array.from({length:innerWidth<700?(calm?70:135):(calm?110:230)},()=>({a:Math.random()*6.28,r:Math.random()*maxR,s:.5+Math.random()*1.5,z:Math.random()}));
  const st={alive:true,stage:1,t:0,sp:.5,rank:1,pop:0,tease:false,rings:[],bolts:[],gate:0,gateT:0,beams:0,crack:0,crackT:0,seg:null,
-  freeze:false,shk:0,z:0,drag:false,dspd:.7,dr:[{u:0,t:[],o:-.22,d:1},{u:0,t:[],o:.22,d:-1}]};
+  freeze:false,shk:0,z:0,drag:false,dspd:.7,spin:0,spinA:0,dr:[{u:0,t:[],o:-.22,d:1},{u:0,t:[],o:.22,d:-1}]};
  let last=performance.now();
  const bolt=c=>{const x0=cx+(Math.random()-.5)*w*.55,pts=[[x0,-20]],n=9;
   for(let i=1;i<n;i++){const u=i/n;pts.push([x0+(cx-x0)*u+(Math.random()-.5)*95*(1-u*.4),-20+(cy+20)*u+(Math.random()-.5)*34])}
   pts.push([cx+(Math.random()-.5)*20,cy]);return{pts,life:1,c}};
- st.climb=k=>{st.rank=k;st.pop=1;st.rings.push({r:20,c:realms[k-1].c,w:3});if(k>=3&&!calm)st.bolts.push(bolt(realms[k-1].c))};
+ st.spinRun=()=>{st.spin=1;st.spinA=0;};
+ st.climb=k=>{st.spin=Math.max(0,st.spin-.18);st.rank=k;st.pop=1;st.rings.push({r:20,c:realms[k-1].c,w:3});if(k>=3&&!calm)st.bolts.push(bolt(realms[k-1].c))};
  st.strike=c=>st.bolts.push(bolt(c||realms[st.rank-1].c));
  st.ring=(c,wd=4)=>st.rings.push({r:10,c:c||realms[st.rank-1].c,w:wd});
  st.cracks=()=>{if(st.seg){st.crackT=1;return}
@@ -52,6 +53,18 @@ function startFx(best){
   x.beginPath();x.arc(0,0,mr,0,7);x.stroke();x.setLineDash([]);x.beginPath();x.arc(0,0,mr*.7,0,7);
   for(let i=0;i<8;i++){const a=i*.7854;x.moveTo(Math.cos(a)*mr*.9,Math.sin(a)*mr*.9);x.lineTo(Math.cos(a)*mr*1.15,Math.sin(a)*mr*1.15)}
   x.stroke();x.restore();
+  // roulette takdir: cincin cepat yang memberi rasa "gacha sedang mengunci hasil"
+  if(st.spin>0){
+   st.spinA+=dt*(8+st.rank*1.8);
+   const sr=mr*(.72+.06*Math.sin(st.t*9));
+   x.save();x.translate(cx,cy);x.rotate(st.spinA);
+   for(let j=0;j<3;j++){
+    x.globalAlpha=(.45-j*.1)*st.spin;x.strokeStyle=j===0?"#fff":pc;x.lineWidth=2-j*.45;
+    x.setLineDash([5+j*4,10-j*2]);x.beginPath();x.arc(0,0,sr+j*18,j*.7,Math.PI*1.45+j*.7);x.stroke();
+   }
+   x.setLineDash([]);x.restore();
+   st.spin=Math.max(0,st.spin-dt*.7);
+  }
   // pendar orb (segel 道 ada di DOM, di atas kanvas) + satelit
   st.pop=Math.max(0,st.pop-dt*2.6);
   const base=(40+st.rank*14)*(st.tease?.75:1)*(1+st.pop*.45)*(1+Math.sin(st.t*(5+st.rank))*.05);
@@ -108,16 +121,16 @@ async function playRitual(best){
   /* 1. kumpul qi */
   stage(1);ch=sfx.charge(Rk);sfx.thump(.5);await w(430);sfx.thump(.7);await w(430);
   /* 2. orb menanjak melewati ranah: warna = petunjuk rarity */
-  if(Rk>=2&&!skipped)stage(2);
+  if(Rk>=2&&!skipped){stage(2);fx.spinRun();sfx.roulette(Rk);}
   let lastTier=CAP_TIER[1][0];
   for(let k=2;k<=Rk&&!skipped;k++){
-   if(Rk>=5&&k===Rk){fx.tease=true;sfx.thump(.8);await w(340);sfx.thump(1);await w(300);fx.tease=false;if(skipped)break}
+   if(Rk>=5&&k===Rk){fx.tease=true;sfx.tension(Rk);sfx.thump(.8);await w(340);sfx.thump(1);await w(300);fx.tease=false;if(skipped)break}
    fx.climb(k);orbUI(k);sfx.ladder(k,Rk);
    if(CAP_TIER[k][0]!==lastTier){cap(CAP_TIER[k]);lastTier=CAP_TIER[k][0]}
    if(k>=5)fx.drag=true;
    await w(k===Rk?340:350+k*25)}
   /* 3. klimaks sesuai rarity */
-  if(!skipped){stage(3);ch&&ch.stop();cap(CAP_FIN[tier]);if(!cal&&navigator.vibrate&&!ST.mute)navigator.vibrate(tier==="div"?[40,50,40,50,160]:tier==="high"?[30,40,90]:tier==="mid"?[25]:0)}
+  if(!skipped){stage(3);ch&&ch.stop();cap(CAP_FIN[tier]);sfx.breakthrough(Rk);if(!cal&&navigator.vibrate&&!ST.mute)navigator.vibrate(tier==="div"?[40,50,40,50,160]:tier==="high"?[30,40,90]:tier==="mid"?[25]:0)}
   if(tier==="low"){
    if(!skipped){fx.ring(best.c,3);flash(.3,320);sfx.splash(Rk);await w(520)}}
   else if(tier==="mid"){

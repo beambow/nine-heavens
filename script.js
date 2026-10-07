@@ -9,7 +9,7 @@ const realms=[
 ];
 let stones=10000,pity=0,history=[],busy=false,bgOn=true;
 const $=x=>document.getElementById(x),fmt=x=>x.toLocaleString("id-ID");
-const D=Math.min(devicePixelRatio||1,1.5);
+const D=Math.min(devicePixelRatio||1,innerWidth<700?1.15:1.5);
 const ez=t=>1-Math.pow(1-Math.min(1,Math.max(0,t)),3);
 /* ---------- V6.1: pengaturan (volume, kurangi efek) ---------- */
 let noSave=false,lastFocus=null;
