@@ -45,9 +45,9 @@ addEventListener("pointerdown",e=>{unlock();const b=e.target.closest&&e.target.c
 
 /* ---------- Latar: partikel qi (sprite, 55 partikel, berhenti saat ritual) ---------- */
 const bg=$("fx"),bx=bg.getContext("2d");let W,H;
-function bsize(){W=bg.width=innerWidth;H=bg.height=innerHeight}bsize();addEventListener("resize",bsize);
+function bsize(){W=bg.width=innerWidth;H=bg.height=innerHeight}bsize();addEventListener("resize",()=>{if(innerWidth!==W||Math.abs(innerHeight-H)>150)bsize()});
 const mk=()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.6,vy:-(.1+Math.random()*.35),vx:(Math.random()-.5)*.3,p:Math.random()*6.28,c:Math.random()<.35?"#e1be76":"#b99aff",petal:Math.random()<.18});
-const motes=Array.from({length:55},mk);
+const motes=Array.from({length:innerWidth<700?28:55},mk);
 function loop(t){requestAnimationFrame(loop);if(!bgOn||document.hidden||(reduce&&t>200))return;
  bx.clearRect(0,0,W,H);bx.globalCompositeOperation="lighter";
  for(const m of motes){m.x+=m.vx+Math.sin(t/1500+m.p)*.3;m.y+=m.vy;if(m.petal){m.y+=.9;m.x+=.35}
@@ -62,7 +62,7 @@ let sW=0,sH=0,smx=innerWidth/2,smy=innerHeight/2,ssx=smx,ssy=smy,sRot=0,swordTra
 function resizeSword(){if(!scv)return;sW=scv.width=innerWidth;sH=scv.height=innerHeight}
 resizeSword();addEventListener("resize",resizeSword);
 
-addEventListener("pointermove",e=>{hasMouse=true;smx=e.clientX;smy=e.clientY},{passive:true});
+addEventListener("pointermove",e=>{if(e.pointerType==="mouse")hasMouse=true;smx=e.clientX;smy=e.clientY},{passive:true});
 addEventListener("pointerdown",e=>{
  daoRipples.push({x:e.clientX,y:e.clientY,r:12,maxR:85,a:1,rot:Math.random()*6.28});
  const b=e.target.closest&&e.target.closest("button");
@@ -85,6 +85,7 @@ function drawSword(ctx,x,y,angle){
 function swordLoop(){
  requestAnimationFrame(swordLoop);
  if(!scx||ST.calm||document.hidden)return;
+ if(!hasMouse&&!daoRipples.length)return;
  scx.clearRect(0,0,sW,sH);
  for(let i=daoRipples.length-1;i>=0;i--){
   const rp=daoRipples[i];rp.r+=3.2;rp.a*=.94;

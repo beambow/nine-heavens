@@ -38,5 +38,5 @@
 
  /* 5. parallax ringan (hanya saat hero terlihat) */
  let tk=false;
- addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{tk=false;root.style.setProperty("--sy",Math.min(scrollY,1200))})},{passive:true});
+ if(!matchMedia("(hover:none)").matches)addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{tk=false;root.style.setProperty("--sy",Math.min(scrollY,1200))})},{passive:true});
 })();

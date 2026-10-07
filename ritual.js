@@ -117,7 +117,7 @@ async function playRitual(best){
    if(k>=5)fx.drag=true;
    await w(k===Rk?340:350+k*25)}
   /* 3. klimaks sesuai rarity */
-  if(!skipped){stage(3);ch&&ch.stop();cap(CAP_FIN[tier])}
+  if(!skipped){stage(3);ch&&ch.stop();cap(CAP_FIN[tier]);if(!cal&&navigator.vibrate&&!ST.mute)navigator.vibrate(tier==="div"?[40,50,40,50,160]:tier==="high"?[30,40,90]:tier==="mid"?[25]:0)}
   if(tier==="low"){
    if(!skipped){fx.ring(best.c,3);flash(.3,320);sfx.splash(Rk);await w(520)}}
   else if(tier==="mid"){

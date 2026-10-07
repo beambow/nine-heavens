@@ -567,3 +567,54 @@ button.continue.gold:hover{transform:translateY(-2px);box-shadow:0 0 35px #ffd32
 
 /* ---- Summon Button disabled state ---- */
 .summon-btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+
+/* =====================================================================
+   MOBILE LAYER — safe area, sentuhan, bottom-sheet, hemat GPU
+   ===================================================================== */
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
+html,body{overscroll-behavior-y:none}
+body{-webkit-tap-highlight-color:transparent}
+.topbar{height:auto;min-height:82px;padding-top:env(safe-area-inset-top);padding-left:max(5vw,env(safe-area-inset-left));padding-right:max(5vw,env(safe-area-inset-right))}
+.modal{padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.modal-box{max-height:calc(100dvh - 32px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.summary{overscroll-behavior:contain;padding-bottom:calc(44px + env(safe-area-inset-bottom))}
+.cinematic-skip{top:max(24px,calc(env(safe-area-inset-top) + 12px));right:max(28px,calc(env(safe-area-inset-right) + 12px))}
+.stage-count{left:max(12px,env(safe-area-inset-left))}
+
+/* layar hasil: konten boleh di-scroll bila lebih tinggi dari layar (sebelumnya terpotong) */
+.result-screen{display:flex;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:max(14px,env(safe-area-inset-top)) 0 max(14px,env(safe-area-inset-bottom))}
+.result-screen>.result-content{margin:auto}
+
+/* hentikan animasi yang tidak terlihat */
+.cinema.off *,.cinema.off:before,.cinema.off:after{animation-play-state:paused!important}
+.overlay-open .cinema *,.overlay-open .stars,.overlay-open .nebula{animation-play-state:paused!important}
+
+@media(pointer:coarse){
+ .mbtn,.modal .x{width:44px;height:44px}
+ .player-realm-btn{min-height:44px}
+ .sbtn,.cfilter,.summon-btn,.continue,.sum-continue,.up,.tower-btn,.divine-btn,.divine-action-btn,.trib-btn{min-height:46px}
+ .cinematic-skip{padding:12px 16px;font-size:11px}
+ .set-row{padding:14px 0}
+ .set-row input[type=checkbox]{width:26px;height:26px}
+ .set-row input[type=range]{height:32px}
+ .fast-toggle{min-height:44px;font-size:12px}
+ .fast-toggle input{width:22px;height:22px}
+ .codex-search-box input{font-size:16px;min-height:44px} /* <16px = iOS zoom otomatis saat fokus */
+ .result-actions .continue{flex:1 1 100%}
+}
+
+@media(max-width:520px){
+ .topbar{padding-left:max(15px,env(safe-area-inset-left));padding-right:max(15px,env(safe-area-inset-right))}
+ .cinema{height:auto;min-height:min(660px,calc(100dvh - 82px))}
+ /* modal jadi bottom-sheet */
+ .modal{place-items:end center;padding:0}
+ .modal-box{width:100%;max-height:90dvh;border-radius:18px 18px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+ #towerCanvas{height:auto;aspect-ratio:480/220}
+ .result-content h2{letter-spacing:-1px}
+ .rlist{margin-bottom:16px}
+}
+@media(max-height:560px) and (orientation:landscape){
+ .cinema{min-height:520px}
+ .modal-box{max-height:calc(100dvh - 12px)}
+}

@@ -7,7 +7,7 @@
 const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
 const ST=(()=>{let d={};try{d=JSON.parse(localStorage.getItem("nh6s")||"{}")||{}}catch(e){}
  const n=(v,f)=>typeof v==="number"&&v>=0&&v<=1?v:f;
- return{mus:n(d.mus,1),sfx:n(d.sfx,1),mute:!!d.mute,calm:typeof d.calm==="boolean"?d.calm:reduce,hint:!!d.hint}})();
+ return{mus:n(d.mus,1),sfx:n(d.sfx,1),mute:!!d.mute,calm:typeof d.calm==="boolean"?d.calm:(reduce||(navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=2),hint:!!d.hint}})();
 const saveST=()=>{try{localStorage.setItem("nh6s",JSON.stringify(ST))}catch(e){}};
 
 const {unlock,applyAudio,tone,sfx,Music,chime}=(function(){
