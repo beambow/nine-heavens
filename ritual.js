@@ -21,7 +21,7 @@ function startFx(best){
  const w=innerWidth,h=innerHeight,cx=w/2,cy=h/2,maxR=Math.hypot(cx,cy),mr=Math.min(w,h)*.27;
  const P=Array.from({length:innerWidth<700?(calm?70:135):(calm?110:230)},()=>({a:Math.random()*6.28,r:Math.random()*maxR,s:.5+Math.random()*1.5,z:Math.random()}));
  const st={alive:true,stage:1,t:0,sp:.5,rank:1,pop:0,tease:false,rings:[],bolts:[],gate:0,gateT:0,beams:0,crack:0,crackT:0,seg:null,
-  freeze:false,shk:0,z:0,drag:false,dspd:.7,spin:0,spinA:0,dr:[{u:0,t:[],o:-.22,d:1},{u:0,t:[],o:.22,d:-1}]};
+  bursts:[],shards:[],shock:[],flash:0,freeze:false,shk:0,z:0,drag:false,dspd:.7,spin:0,spinA:0,dr:[{u:0,t:[],o:-.22,d:1},{u:0,t:[],o:.22,d:-1}]};
  let last=performance.now();
  const bolt=c=>{const x0=cx+(Math.random()-.5)*w*.55,pts=[[x0,-20]],n=9;
   for(let i=1;i<n;i++){const u=i/n;pts.push([x0+(cx-x0)*u+(Math.random()-.5)*95*(1-u*.4),-20+(cy+20)*u+(Math.random()-.5)*34])}
@@ -30,6 +30,8 @@ function startFx(best){
  st.climb=k=>{st.spin=Math.max(0,st.spin-.18);st.rank=k;st.pop=1;st.rings.push({r:20,c:realms[k-1].c,w:3});if(k>=3&&!calm)st.bolts.push(bolt(realms[k-1].c))};
  st.strike=c=>st.bolts.push(bolt(c||realms[st.rank-1].c));
  st.ring=(c,wd=4)=>st.rings.push({r:10,c:c||realms[st.rank-1].c,w:wd});
+ st.burst=(c,n=70,power=1)=>{const cc=c||realms[st.rank-1].c;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=(160+Math.random()*760)*power;st.bursts.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,size:1+Math.random()*4,c:cc});}st.shock.push({r:10,life:1,c:cc,w:5+power*4});st.shk+=10+power*12;st.flash=Math.max(st.flash,.45*power)};
+ st.shard=(c,n=30)=>{const cc=c||realms[st.rank-1].c;for(let i=0;i<n;i++){const a=Math.random()*6.283,sp=250+Math.random()*850;st.shards.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,c:cc,size:2+Math.random()*5,rot:Math.random()*6.28});}};
  st.cracks=()=>{if(st.seg){st.crackT=1;return}
   const seg=[],tp=[0,1,2,3,4,5,6].map(i=>({x:cx,y:cy,a:i*.9+Math.random()*.6}));
   for(let s=0;s<26;s++)for(const q of tp.slice()){const nx=q.x+Math.cos(q.a)*22,ny=q.y+Math.sin(q.a)*22;seg.push([q.x,q.y,nx,ny]);q.x=nx;q.y=ny;q.a+=(Math.random()-.5)*.8;
@@ -71,6 +73,11 @@ function startFx(best){
   dot(x,cx,cy,base*3.8,glow,.2);dot(x,cx,cy,base*1.8,col,.22);
   const nm=2+st.rank*2;
   for(let i=0;i<nm;i++){const a=st.t*(1.1+i%3*.35)+i*6.283/nm,rr=base*(1.9+.35*Math.sin(st.t*2+i));dot(x,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.5,5+st.rank*.8,"#fff",.75)}
+  // ledakan partikel / pecahan energi
+  for(const p of st.bursts){p.life-=dt*1.7;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.08,dt);p.vy*=Math.pow(.08,dt);if(p.life<=0)continue;x.globalAlpha=p.life*.95;x.fillStyle=p.c;x.shadowBlur=18;x.shadowColor=p.c;x.beginPath();x.arc(p.x,p.y,p.size*(.6+p.life),0,7);x.fill();x.shadowBlur=0} st.bursts=st.bursts.filter(p=>p.life>0);
+  for(const p of st.shards){p.life-=dt*1.25;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=240*dt;p.rot+=dt*8;if(p.life<=0)continue;x.save();x.translate(p.x,p.y);x.rotate(p.rot);x.globalAlpha=p.life;x.fillStyle=p.c;x.fillRect(-p.size,-1,p.size*2,2);x.restore()} st.shards=st.shards.filter(p=>p.life>0);
+  for(const q of st.shock){q.r+=1500*dt;q.life-=dt*1.9;if(q.life<=0)continue;x.globalAlpha=q.life;x.strokeStyle=q.c;x.lineWidth=q.w*(.4+q.life);x.beginPath();x.arc(cx,cy,q.r,0,7);x.stroke()}st.shock=st.shock.filter(q=>q.life>0);
+  if(st.flash>0){x.globalAlpha=st.flash;x.fillStyle='#fff';x.fillRect(0,0,w,h);st.flash=Math.max(0,st.flash-dt*3.5)}
   // gelombang kejut
   for(const g of st.rings){g.r+=(st.stage>=3?1100:700)*dt;x.globalAlpha=Math.max(0,1-g.r/maxR);x.strokeStyle=g.c;x.lineWidth=g.w;x.beginPath();x.arc(cx,cy,g.r,0,7);x.stroke()}
   st.rings=st.rings.filter(g=>g.r<maxR);
@@ -132,17 +139,17 @@ async function playRitual(best){
   /* 3. klimaks sesuai rarity */
   if(!skipped){stage(3);ch&&ch.stop();cap(CAP_FIN[tier]);sfx.breakthrough(Rk);if(!cal&&navigator.vibrate&&!ST.mute)navigator.vibrate(tier==="div"?[40,50,40,50,160]:tier==="high"?[30,40,90]:tier==="mid"?[25]:0)}
   if(tier==="low"){
-   if(!skipped){fx.ring(best.c,3);flash(.3,320);sfx.splash(Rk);await w(520)}}
+   if(!skipped){fx.burst(best.c,70,.8);fx.shard(best.c,18);fx.ring(best.c,3);flash(.55,220);sfx.explode(.7);sfx.splash(Rk);await w(420)}}
   else if(tier==="mid"){
-   for(let i=0;i<3&&!skipped;i++){fx.strike(best.c);fx.ring(best.c,4);fx.shk=12+i*3;sfx.crack(.28+i*.08);flash(.35+i*.1,260);await w(i<2?230:300)}}
+   for(let i=0;i<4&&!skipped;i++){fx.strike(best.c);fx.burst(best.c,55+i*18,1+i*.18);fx.shard(best.c,20+i*8);fx.ring(best.c,4+i);fx.shk=16+i*5;sfx.explode(.65+i*.12);sfx.crack(.38+i*.08);flash(.6,180);await w(i<3?190:320)}}
   else if(tier==="high"){
    if(!skipped){fx.gateT=1;fx.dspd=1.6;fx.drag=true;fx.shk=16;if(Rk>=6)fx.cracks();
-    sfx.gate();sfx.gong(Rk);flash(.5,320);fx.strike(best.c);fx.ring(best.c,5);await w(500);
-    if(!skipped){fx.ring(best.c,5);fx.shk=12;sfx.crack(.3);await w(850)}}}
+    sfx.gate();sfx.gong(Rk);sfx.explode(1.15);flash(.8,240);fx.strike(best.c);fx.burst(best.c,110,1.45);fx.shard(best.c,55);fx.ring(best.c,5);await w(420);
+    if(!skipped){fx.burst(best.c,90,1.3);fx.shard(best.c,40);fx.ring(best.c,7);fx.shk=20;sfx.explode(1.0);sfx.crack(.42);await w(700)}}}
   else{
    if(!skipped){fx.freeze=true;Music.duck(.1,.7);await w(300);fx.freeze=false}
-   if(!skipped){fx.gateT=1;fx.dspd=2;fx.drag=true;fx.shk=22;fx.cracks();sfx.gate();sfx.gong(7);sfx.cascade();flash(.7,400);fx.strike("#fff1a0");fx.ring("#fff1a0",6);
-    for(let i=1;i<=9&&!skipped;i++){fx.beams=i;fx.ring(best.c,3);await w(130)}
+   if(!skipped){fx.gateT=1;fx.dspd=2;fx.drag=true;fx.shk=22;fx.cracks();sfx.gate();sfx.gong(7);sfx.cascade();sfx.explode(1.8);flash(1,260);fx.strike("#fff1a0");fx.burst("#fff1a0",220,2.4);fx.shard("#fff1a0",100);fx.ring("#fff1a0",6);
+    for(let i=1;i<=9&&!skipped;i++){fx.beams=i;fx.burst(best.c,42,1.2);fx.ring(best.c,3);sfx.explode(.5);await w(105)}
     if(!skipped){fx.shk=14;await w(700)}}}
   /* 4. whiteout */
   stage(4);flash(1,600);await w(skipped?0:Rk>=7?800:Rk>=5?500:300);

@@ -117,6 +117,15 @@ function bambooSticks(t=AC.currentTime,v=.2){
   o.connect(g);route(g,"s",.25);o.start(dt);o.stop(dt+.08);
  }
 }
+function explosion(t=AC.currentTime,v=.8){
+ thump(v*1.8,t,72);
+ noiseSweep({t,d:.32,f0:180,f1:45,type:"lowpass",q:.9,v:v*.9,a:.008,wet:.65});
+ noiseSweep({t,d:.22,f0:900,f1:7200,type:"bandpass",q:.7,v:v*.75,a:.003,wet:.45});
+ noiseSweep({t:t+.018,d:.5,f0:9000,f1:700,type:"highpass",q:.5,v:v*.55,a:.002,wet:.5});
+ const base=120+v*90;[1,1.5,2.02,2.7].forEach((r,i)=>{const o=AC.createOscillator(),g=envG(t+i*.012,.003,v*(.18-.025*i),.35+i*.08);o.type=i%2?"triangle":"sine";o.frequency.setValueAtTime(base*r,t+i*.012);o.frequency.exponentialRampToValueAtTime(base*r*.55,t+.35);o.connect(g);route(g,"s",.45);o.start(t+i*.012);o.stop(t+.45)});
+}
+function whoosh(t=AC.currentTime,v=.3){noiseSweep({t,d:.38,f0:250,f1:6800,q:1.8,v,a:.012,wet:.3});}
+
 function rollingThunder(t=AC.currentTime,v=.35){
  thump(v*.8,t,65);
  noiseSweep({t,d:1.8,f0:240,f1:38,q:1.4,type:"lowpass",v:v*.9,a:.25,wet:.7});
@@ -267,6 +276,8 @@ const sfx={
   shatter:safe((v)=>glassShatter(AC.currentTime,v)),
   sticks:safe((v)=>bambooSticks(AC.currentTime,v)),
   thunder:safe((v)=>rollingThunder(AC.currentTime,v)),
+  explode:safe((v)=>explosion(AC.currentTime,v)),
+  whoosh:safe((v)=>whoosh(AC.currentTime,v)),
   chant:safe((d,v)=>daoChant(AC.currentTime,d,v))
 };
 const chime=sfx.reveal;
