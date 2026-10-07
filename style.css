@@ -1,0 +1,569 @@
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+:root{--gold:#e1be76;--vio:#c7a1ff}
+body{margin:0;background:#04040a;color:#eee;font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+.sky,.stars,.nebula,#fx{position:fixed;inset:0;pointer-events:none}
+#fx{width:100%;height:100%;z-index:1}
+.sky{background:radial-gradient(circle at 50% 20%,#2a1a56 0,#0b0a18 34%,#030309 76%)}
+.stars{opacity:.55;background-image:radial-gradient(#fff 1px,transparent 1px),radial-gradient(#a48cff 1px,transparent 1px);background-size:87px 87px,137px 137px;animation:twk 6s ease-in-out infinite alternate}@keyframes twk{to{opacity:.25}}
+.nebula{opacity:.3}
+.n1{background:radial-gradient(ellipse at 25% 20%,#5f39cc,transparent 42%)}.n2{background:radial-gradient(ellipse at 75% 65%,#bd3c85,transparent 40%);animation-delay:-7s}
+@keyframes neb{to{opacity:.12;transform:scale(1.15)}}@keyframes starMove{to{background-position:200px 250px,-180px 170px}}
+.topbar{height:82px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10;border-bottom:1px solid #ffffff12;background:#05050af2}
+.brand{display:flex;gap:12px;align-items:center}.brand-symbol{font-size:34px;color:#d6ae63;text-shadow:0 0 20px #b77c25;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.brand b{display:block;font-family:Cinzel,serif;letter-spacing:4px;font-size:15px}.brand small{font-size:8px;letter-spacing:3px;color:#77758b}
+.top-stats{display:flex;align-items:center;gap:18px}.stat{display:flex;align-items:center;gap:9px}.stat>span{color:#d6ae63;font-size:20px;text-shadow:0 0 14px #d6ae63}.stat small{display:block;font-size:7px;color:#6e6d80;letter-spacing:2px}.stat b{font-size:13px}
+.avatar{width:39px;height:39px;border:1px solid #b88c4a88;border-radius:50%;display:grid;place-items:center;color:#e1be76;font:20px "Ma Shan Zheng",serif;box-shadow:0 0 18px #b88c4a44}
+/* HERO */
+.cinema{height:720px;min-height:680px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;z-index:2;--mx:0;--my:0}
+.moon{position:absolute;width:280px;height:280px;border-radius:50%;right:11%;top:11%;background:radial-gradient(circle at 38% 35%,#fff9d7,#d6c4ff 25%,#8972bd 55%,#35255d 72%);box-shadow:0 0 60px #9f8ae6aa,0 0 180px #7b5fd066;opacity:.9;transform:translate(calc(var(--mx)*-14px),calc(var(--my)*-10px));will-change:transform}
+.moon i{position:absolute;inset:-60px;border-radius:50%;border:1px solid #c8b6ff44;animation:halo 6s ease-out infinite}
+@keyframes moonPulse{50%{filter:brightness(1.15)}}@keyframes halo{from{transform:scale(.8);opacity:.9}to{transform:scale(1.5);opacity:0}}
+.vtext{position:absolute;right:4%;top:14%;writing-mode:vertical-rl;font:28px "Ma Shan Zheng",serif;letter-spacing:12px;color:#e1be7699;text-shadow:0 0 18px #b77c25;z-index:3;animation:flick 5s ease-in-out infinite}
+@keyframes flick{50%{opacity:.55}}
+.streak{position:absolute;top:18%;left:-20%;width:300px;height:2px;background:linear-gradient(90deg,transparent,#fff,#b99cff);transform:rotate(22deg);opacity:0;filter:drop-shadow(0 0 8px #b99cff);animation:streak 7s 2s infinite}
+@keyframes streak{0%{opacity:0;transform:translate(0,0) rotate(22deg)}3%{opacity:1}12%{opacity:0;transform:translate(130vw,55vh) rotate(22deg)}100%{opacity:0}}
+.mt{position:absolute;left:-5%;right:-5%;bottom:0}
+.m3{height:62%;background:linear-gradient(#2a1d52,#0d0b1f);clip-path:polygon(0 70%,10% 40%,20% 62%,32% 18%,44% 58%,55% 30%,66% 60%,78% 22%,90% 55%,100% 35%,100% 100%,0 100%);opacity:.7;transform:translate(calc(var(--mx)*-10px),calc(var(--my)*-4px))}
+.m2{height:46%;background:linear-gradient(#1a1238,#090814);clip-path:polygon(0 60%,9% 35%,18% 58%,27% 25%,38% 56%,50% 16%,60% 52%,72% 30%,83% 58%,92% 28%,100% 50%,100% 100%,0 100%);transform:translate(calc(var(--mx)*-20px),calc(var(--my)*-7px))}
+.m1{height:30%;background:linear-gradient(#0c0a1b,#04040a);clip-path:polygon(0 55%,12% 30%,24% 58%,38% 22%,52% 60%,66% 28%,80% 62%,92% 32%,100% 55%,100% 100%,0 100%);transform:translate(calc(var(--mx)*-32px),calc(var(--my)*-10px))}
+.mist{position:absolute;left:-30%;width:160%;height:200px;background:radial-gradient(ellipse at 30% 50%,#b8a5ff40,transparent 60%),radial-gradient(ellipse at 75% 60%,#ff8ac433,transparent 55%);will-change:transform;animation:drift 22s ease-in-out infinite alternate}
+.mist.a{bottom:24%}.mist.b{bottom:8%;animation-duration:30s;animation-direction:alternate-reverse;opacity:.9}
+@keyframes drift{to{transform:translateX(18%)}}
+.altar{position:absolute;width:480px;height:480px;right:10%;bottom:50px;display:grid;place-items:center;z-index:2;transform:translate(calc(var(--mx)*12px),calc(var(--my)*8px));will-change:transform}
+.formation{position:absolute;border:1px solid #c9a3ff88;box-shadow:0 0 25px #8254d655,inset 0 0 25px #8254d633}
+.formation.outer{width:100%;height:100%;border-radius:50%;border-style:dashed;animation:rotate 28s linear infinite}
+.formation.mid{width:76%;height:76%;transform:rotate(45deg);animation:rotate 19s linear infinite reverse;border-color:#e1be7699}
+.formation.inner{width:51%;height:51%;border-radius:50%;animation:rotate 11s linear infinite}
+.formation.rays{width:100%;height:100%;border:0;border-radius:50%;box-shadow:none;background:repeating-conic-gradient(from 0deg,#b98aff33 0 2deg,transparent 2deg 15deg);-webkit-mask:radial-gradient(circle,transparent 28%,#000 29%,transparent 70%);mask:radial-gradient(circle,transparent 28%,#000 29%,transparent 70%);animation:rotate 40s linear infinite reverse}
+.core{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;font:52px "Ma Shan Zheng",Georgia,serif;color:#fff;background:radial-gradient(circle,#e6d9ff,#6a40c4 45%,#120b29 70%);box-shadow:0 0 45px #9366ff,0 0 140px #633bb7aa;animation:pulse 2.8s ease-in-out infinite;z-index:2;text-shadow:0 0 18px #fff}
+.pillar{position:absolute;width:2px;height:150%;background:linear-gradient(transparent,#bd8fff,transparent);opacity:.3}
+.p1{transform:rotate(0)}.p2{transform:rotate(90deg)}.p3{transform:rotate(45deg)}.p4{transform:rotate(-45deg)}
+@keyframes rotate{to{transform:rotate(405deg)}}@keyframes pulse{50%{transform:scale(1.14);filter:brightness(1.4)}}
+.hero-text{position:relative;z-index:4;width:min(720px,85vw);margin-right:39%;margin-top:-40px}
+.kanji{letter-spacing:17px;color:#d6b56e;font:20px "Ma Shan Zheng",serif;margin-bottom:14px;text-shadow:0 0 16px #b77c25}
+.eyebrow{font-size:9px;letter-spacing:5px;color:#9a97b4}
+.hero-text h1{font:600 clamp(53px,7vw,92px)/.93 Cinzel,serif;letter-spacing:-3px;margin:15px 0;text-shadow:0 0 40px #4a2a9a}
+.hero-text h1 em{font-style:normal;background:linear-gradient(100deg,#8e5bff,#f1e4ff 40%,#e1be76 55%,#8e5bff 80%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 6s linear infinite}
+@keyframes shim{to{background-position:-250% 0}}
+.hero-text>*{animation:ink 1.3s cubic-bezier(.2,.8,.2,1) both}.hero-text>:nth-child(2){animation-delay:.15s}.hero-text>:nth-child(3){animation-delay:.3s}.hero-text>:nth-child(4){animation-delay:.5s}.hero-text>:nth-child(5){animation-delay:.7s}
+@keyframes ink{from{opacity:0;filter:blur(14px);transform:translateY(18px) scale(1.04)}}
+.hero-text p{font-size:14px;line-height:1.8;color:#a9a7be}
+.summon-main{position:relative;overflow:hidden;margin-top:16px;border:1px solid #cdb6ff88;background:linear-gradient(120deg,#412477,#7a4ec8,#3b236d);color:#fff;padding:17px 26px;border-radius:5px;letter-spacing:2px;font-weight:800;box-shadow:0 0 35px #7c4ed366;cursor:pointer;transition:.25s;animation:ink 1.3s .9s both,btnGlow 3s 2s ease-in-out infinite}
+.summon-main:before,.summon-btn:before{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);transform:translateX(-120%) skewX(-20deg);animation:sweep 3.4s 1.5s infinite}
+@keyframes sweep{to{transform:translateX(450%) skewX(-20deg)}}@keyframes btnGlow{50%{box-shadow:0 0 70px #a574ffaa}}
+.summon-main:hover{transform:translateY(-3px) scale(1.03)}.summon-main small{display:block;font-size:8px;color:#d5c9eb;margin-top:5px}
+.scroll-hint{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:3px;color:#7a7890;z-index:5}.scroll-hint i{display:block;text-align:center;font-size:17px;margin-top:5px;color:#d6a860;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(7px)}}
+/* DASHBOARD */
+.dashboard{position:relative;z-index:5;max-width:1180px;margin:auto;padding:70px 22px 110px}
+.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:25px}
+.section-head small,.panel-copy>small{font-size:8px;letter-spacing:4px;color:#8b89a0}
+.section-head h2,.panel-copy h2{font:500 34px Cinzel,serif;margin:7px 0}
+.section-head em,.panel-copy em{font-style:normal;color:var(--vio);text-shadow:0 0 35px #7b4bd2}
+.pity-box{width:220px}.pity-box span{font-size:8px;letter-spacing:2px;color:#777}.pity-box b{float:right;font-size:9px;color:#c9b0ff}.pity-box i{display:block;height:4px;background:#181726;margin-top:9px}
+.pity-box u{display:block;width:0;height:100%;background:linear-gradient(90deg,#6f3fe5,#d1a7ff,#fff);box-shadow:0 0 14px #9a65ff;text-decoration:none;transition:.8s cubic-bezier(.2,.8,.2,1)}
+.realm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;perspective:900px}
+.realm{--rx:0deg;--ry:0deg;--px:50%;--py:50%;min-height:150px;background:linear-gradient(180deg,#14142a,#080811);border:1px solid #ffffff14;border-radius:4px;padding:14px 8px;position:relative;overflow:hidden;transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .15s,border-color .3s,box-shadow .3s;opacity:0;animation:cardIn .8s cubic-bezier(.2,.8,.2,1) forwards;animation-play-state:paused}
+.realm.in{animation-play-state:running}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) rotateX(-30deg)}to{opacity:1}}
+.realm:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--px) var(--py),color-mix(in srgb,var(--c) 38%,transparent),transparent 55%);opacity:0;transition:.3s}
+.realm:hover{border-color:var(--c);box-shadow:0 18px 50px #000,0 0 30px color-mix(in srgb,var(--g) 55%,transparent)}.realm:hover:before{opacity:1}
+.realm .orbmini{width:31px;height:31px;border-radius:50%;margin-bottom:15px;background:radial-gradient(circle,#fff,var(--c) 35%,#090812 72%);box-shadow:0 0 20px var(--g);animation:orb 3s ease-in-out infinite}
+@keyframes orb{50%{box-shadow:0 0 38px var(--g),0 0 8px var(--c);transform:scale(1.15)}}
+.realm b{font:600 11px Cinzel,serif;display:block;position:relative}.realm small{display:block;color:#8a889d;font-size:8px;margin-top:7px;line-height:1.5;position:relative}
+.realm .rate{position:absolute;right:8px;top:10px;font-size:8px;color:var(--c)}
+.realm:last-child{border-color:#ffe08a66;animation:cardIn .8s forwards,divine 3s ease-in-out infinite}
+@keyframes divine{50%{box-shadow:0 0 36px #ffdc4c66}}
+.summon-panel{margin-top:42px;padding:30px;border:1px solid #ffffff14;background:linear-gradient(110deg,#0d0c17,#1a1334,#0a0a12);display:flex;align-items:center;justify-content:space-between;gap:30px;box-shadow:0 20px 80px #0008}
+.panel-copy h2{margin-bottom:5px}.panel-copy p{font-size:11px;color:#8d8ba0}.panel-copy p b{color:#c8a7ff}
+.buttons{display:flex;gap:10px;min-width:360px}
+.summon-btn{position:relative;overflow:hidden;flex:1;padding:16px;border-radius:4px;border:1px solid #ffffff22;color:#fff;cursor:pointer;transition:.2s}
+.summon-btn:hover{transform:translateY(-4px)}.summon-btn:active{transform:scale(.97)}
+.summon-btn strong,.summon-btn span{display:block;position:relative}.summon-btn strong{font-size:12px;letter-spacing:1px}.summon-btn span{font-size:8px;margin-top:6px;opacity:.7}
+.violet{background:linear-gradient(135deg,#412274,#7650c1);box-shadow:0 0 24px #7650c155}.gold{background:linear-gradient(135deg,#674218,#d79a3c);color:#fff5dc;box-shadow:0 0 28px #d79a3c55}
+.history-section{margin-top:70px}.compact{margin-bottom:15px}
+.history{display:flex;gap:8px;overflow:auto;padding-bottom:8px}
+.history-item{min-width:160px;padding:14px;background:#0d0d18;border:1px solid #ffffff10;border-top:2px solid var(--c);border-radius:4px;box-shadow:0 -8px 22px -14px var(--c);animation:slideIn .6s cubic-bezier(.2,.8,.2,1) backwards}
+.history-item b{font:600 11px Cinzel;color:var(--c)}.history-item small{display:block;color:#7c7a90;font-size:8px;margin-top:5px}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px) scale(.9)}}
+.empty{padding:25px;color:#6a6880;font-size:11px}
+/* RITUAL */
+.ritual,.result-screen{position:fixed;inset:0;z-index:100;background:#020207;overflow:hidden}
+.hidden{display:none!important}
+#rfx{position:absolute;inset:0;width:100%;height:100%}
+.ritual-vignette{position:absolute;inset:0;box-shadow:inset 0 0 200px #000;pointer-events:none}
+.bar{position:absolute;left:0;right:0;height:0;background:#000;z-index:8;transition:height 1s cubic-bezier(.2,.8,.2,1)}.bar.top{top:0}.bar.bot{bottom:0}
+.ritual.on .bar{height:11vh}
+.cinematic-skip{position:absolute;right:28px;top:24px;z-index:20;border:1px solid #ffffff33;padding:8px 12px;color:#999;font-size:9px;letter-spacing:2px;cursor:pointer;background:#0006}.cinematic-skip:hover{color:#fff}.cinematic-skip span{font-size:14px;color:#c9a96b}
+.stage-count{position:absolute;left:28px;top:24px;z-index:20;font:20px Cinzel;color:#c4a76d}
+.seal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.4);width:150px;height:150px;border-radius:50%;display:grid;place-items:center;border:1px solid #fff9;box-shadow:0 0 60px #9e72ff;background:radial-gradient(circle,#efe6ff,#7048c0 45%,#0b0715 70%);opacity:0;transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1s,box-shadow 1s}
+.ritual.on .seal{opacity:1;transform:translate(-50%,-50%) scale(1);animation:seal .8s infinite alternate}
+.seal span{font:84px "Ma Shan Zheng",Georgia,serif;color:#fff;text-shadow:0 0 25px #fff}
+@keyframes seal{to{transform:translate(-50%,-50%) scale(1.07)}}
+.ritual.stage2 .seal{animation:none;transform:translate(-50%,-50%) scale(1.35);box-shadow:0 0 180px #c6a0ff}
+.ritual.stage3 .seal{animation:impact .9s ease-out forwards}
+@keyframes impact{0%{transform:translate(-50%,-50%) scale(1.35)}45%{transform:translate(-50%,-50%) scale(.3);filter:brightness(4)}100%{transform:translate(-50%,-50%) scale(5);opacity:0}}
+.pillar-light{position:absolute;left:50%;top:0;height:100%;width:0;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--pc,#c9a8ff),#fff,var(--pc,#c9a8ff),transparent);opacity:0;transition:width .7s cubic-bezier(.1,.9,.2,1),opacity .4s;z-index:4}
+.ritual.stage3 .pillar-light{width:min(260px,40vw);opacity:.95}
+.caption{position:absolute;left:0;right:0;bottom:15vh;text-align:center;z-index:9;transition:opacity .5s,transform .5s}
+.caption b{display:block;font:44px "Ma Shan Zheng",serif;letter-spacing:14px;color:#f1dfaa;text-shadow:0 0 22px #b77c25,0 0 60px #7b4bd2;padding-left:14px}
+.caption small{display:block;margin-top:10px;font:10px Cinzel;letter-spacing:8px;color:#bda9e8}
+.caption.swap{opacity:0;transform:translateY(12px)}
+.whiteout{position:absolute;inset:0;background:radial-gradient(circle,#fff,#e5d6ff 40%,#fff);opacity:0;z-index:15;transition:opacity .35s;pointer-events:none}
+.ritual.stage4 .whiteout{opacity:1}
+/* RESULT */
+.result-screen{display:grid;place-items:center;background:radial-gradient(circle at 50% 48%,#2a1b4c,#070611 45%,#020206)}
+.result-stars{position:absolute;inset:0;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:47px 47px;opacity:.3}
+.rays-bg{position:absolute;left:50%;top:50%;width:150vmax;height:150vmax;margin:-75vmax;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--g) 38%,transparent) 0 3deg,transparent 3deg 14deg);-webkit-mask:radial-gradient(circle,#000,transparent 38%);mask:radial-gradient(circle,#000,transparent 38%);will-change:transform;animation:rotate 50s linear infinite,raysIn 1.4s ease-out}
+@keyframes raysIn{from{opacity:0;scale:.3}}
+.ring{position:absolute;left:50%;top:50%;width:40vmin;height:40vmin;margin:-20vmin;border-radius:50%;border:2px solid var(--c);box-shadow:0 0 40px var(--g),inset 0 0 40px var(--g);opacity:0;animation:shock 1.8s ease-out}
+.r2{animation-delay:.25s}.r3{animation-delay:.5s}
+@keyframes shock{0%{transform:scale(.1);opacity:1}100%{transform:scale(3.2);opacity:0}}
+#particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.result-content{position:relative;text-align:center;width:min(760px,92vw)}
+.rarity{font-size:10px;letter-spacing:7px;color:var(--c);text-shadow:0 0 18px var(--g);animation:fadeUp .8s .5s both}
+.chinese{font:44px "Ma Shan Zheng",serif;color:#e6c986;margin:10px;text-shadow:0 0 24px #b77c25;letter-spacing:10px;animation:inkIn 1.1s .15s both}
+.result-content h2{font:600 clamp(40px,7vw,76px) Cinzel;margin:0;color:var(--c);text-shadow:0 0 35px var(--g);letter-spacing:-2px}
+.result-content h2 span{display:inline-block;animation:var(--la,letter) .8s cubic-bezier(.2,1.4,.3,1) backwards}
+@keyframes letter{from{opacity:0;transform:translateY(40px) scale(1.8);filter:blur(10px)}}
+@keyframes inkIn{from{opacity:0;filter:blur(18px);transform:scale(1.7)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}}
+.tag{margin:14px auto;width:max-content;padding:6px 14px;border:1px solid var(--c);color:var(--c);font-size:9px;letter-spacing:3px;animation:fadeUp .8s 1s both}
+.result-content p{color:#aaa6bd;font-size:12px;max-width:500px;margin:20px auto;line-height:1.8;animation:fadeUp .8s 1.2s both}
+.power{width:300px;margin:25px auto 18px;animation:fadeUp .8s 1.4s both}.power span{display:block;font-size:8px;letter-spacing:3px;color:#7b7890}.power b{font:24px Cinzel;color:#f0dcaa;text-shadow:0 0 18px #b77c25}
+.rlist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 auto 24px;max-width:640px}
+.rlist i{font:normal 9px Cinzel;padding:6px 10px;border:1px solid var(--c);color:var(--c);background:#0008;box-shadow:0 0 14px -4px var(--c);animation:chip .5s backwards}
+@keyframes chip{from{opacity:0;transform:scale(.3) rotate(-8deg)}}
+.continue{padding:14px 26px;background:transparent;color:#ddd;border:1px solid #ffffff44;cursor:pointer;letter-spacing:2px;font-size:10px;animation:fadeUp .8s 1.9s both;transition:.2s}.continue:hover{background:#fff;color:#111}.continue span{margin-left:20px}
+.result-screen.divine{background:radial-gradient(circle at 50% 45%,#7a5214,#20130a 18%,#050404 55%,#010101)}
+.result-screen.divine .result-content{filter:drop-shadow(0 0 50px #ffcf55)}
+.divine-crown{position:absolute;top:9%;width:100%;text-align:center;font:14px Cinzel;letter-spacing:10px;color:#f7d986;opacity:0;z-index:2}
+.result-screen.divine .divine-crown{animation:crownIn 1.5s .4s forwards}
+@keyframes crownIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1}}
+.result-screen.divine .result-content h2{font-size:clamp(55px,10vw,105px);color:#fff1a0;text-shadow:0 0 20px #fff,0 0 70px #e8a72f}
+.result-screen.divine .tag{background:#ffca3218;box-shadow:0 0 30px #ffbe4266}
+#toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,30px);opacity:0;z-index:300;padding:10px 18px;background:#141320;border:1px solid #ffffff33;font-size:10px;transition:.3s}#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.cinema{min-height:740px}.hero-text{margin:0;text-align:center}.altar{right:-120px;opacity:.45}.moon{right:-100px}.vtext{display:none}.realm-grid{grid-template-columns:repeat(2,1fr)}.summon-panel{flex-direction:column;align-items:stretch}.buttons{min-width:0}.section-head{align-items:start;gap:20px}.pity-box{width:150px}.brand b{font-size:11px}.brand small{display:none}}
+@media(max-width:520px){.topbar{padding:0 15px}.stat{display:none}.cinema{height:660px}.hero-text h1{font-size:48px}.kanji{letter-spacing:9px}.altar{right:-190px;bottom:70px}.moon{width:180px;height:180px;right:-40px}.realm{min-height:130px}.buttons{flex-direction:column}.summon-panel{padding:22px}.seal{width:105px;height:105px}.seal span{font-size:56px}.caption b{font-size:30px;letter-spacing:8px}.caption small{font-size:8px;letter-spacing:5px}.cinematic-skip{right:12px}.stage-count{left:12px}}
+@media(prefers-reduced-motion:reduce){*,:before,:after{animation-duration:.01s!important;animation-iteration-count:1!important}}
+
+/* ===== V5 ===== */
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:400}
+.slash{position:absolute;left:-10%;top:48%;width:120%;height:3px;background:#fff;box-shadow:0 0 30px #fff,0 0 80px var(--pc,#c9a8ff);z-index:10;opacity:0}
+.ritual.stage3 .slash{animation:slash .55s ease-out}
+@keyframes slash{0%{opacity:1;transform:rotate(-12deg) scaleX(0)}40%{opacity:1;transform:rotate(-12deg) scaleX(1)}100%{opacity:0;transform:rotate(-12deg) scaleX(1) scaleY(7)}}
+.whiteout{background:radial-gradient(circle,#fff 30%,var(--pc,#e5d6ff))}
+.orbmini{position:relative}
+.orbmini:before,.orbmini:after{content:"";position:absolute;pointer-events:none}
+/* tiap ranah punya animasi kartu sendiri */
+.rk1 .orbmini{animation:hit 1.1s infinite}
+@keyframes hit{0%,60%{transform:scale(1)}65%{transform:scale(.78)}72%{transform:scale(1.22)}100%{transform:scale(1)}}
+.rk1 .orbmini:after{left:50%;top:0;width:3px;height:3px;border-radius:50%;background:#ffb05a;box-shadow:-10px -6px #ffb05a,12px -10px #ffd9a0,4px -14px #ffb05a;opacity:0;animation:spark 1.1s infinite}
+@keyframes spark{62%{opacity:1}100%{opacity:0;transform:translateY(-16px) scale(1.7)}}
+.rk2 .orbmini:before,.rk2 .orbmini:after{inset:-7px;border-radius:50%;border:2px solid transparent;border-top-color:var(--c);border-right-color:var(--c);animation:spin 1.5s linear infinite}
+.rk2 .orbmini:after{inset:-12px;border-top-color:transparent;border-right-color:transparent;border-bottom-color:var(--g);animation-direction:reverse;animation-duration:2.4s}
+.rk3 .orbmini:before,.rk3 .orbmini:after{inset:-8px;border:1.5px solid var(--c);animation:spin 6s linear infinite}
+.rk3 .orbmini:after{border-color:var(--g);animation-direction:reverse;inset:-13px}
+.rk4 .orbmini:before{inset:-9px;border-radius:50%;border:1px solid var(--c)}
+.rk4 .orbmini:after{left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff;box-shadow:0 0 8px var(--c);animation:orbit 2s linear infinite}
+@keyframes orbit{from{transform:rotate(0) translateX(22px)}to{transform:rotate(360deg) translateX(22px)}}
+.rk5 .orbmini{animation:flame .5s infinite alternate}
+@keyframes flame{from{transform:scale(1);box-shadow:0 0 14px var(--g)}to{transform:scale(1.1,1.22) translateY(-2px);box-shadow:0 -8px 26px var(--c)}}
+.rk5 .orbmini:after{left:50%;top:0;width:3px;height:3px;border-radius:50%;background:#ffd27a;box-shadow:-9px 4px #ff9a3a,9px 2px #ffd27a;animation:ember 1.3s infinite}
+@keyframes ember{from{opacity:1}to{opacity:0;transform:translateY(-26px)}}
+.rk6 .orbmini{animation:glt 2.4s infinite steps(1)}
+@keyframes glt{0%,88%,100%{transform:none;clip-path:none}90%{transform:translateX(-5px) skewX(22deg)}93%{transform:translateX(5px);clip-path:inset(40% 0 20% 0)}96%{transform:none}}
+.rk6 .orbmini:before{left:50%;top:-30%;width:2px;height:160%;background:#fff;box-shadow:0 0 8px var(--c);transform:rotate(28deg);animation:crk 2.4s infinite steps(1)}
+@keyframes crk{0%,88%,100%{opacity:0}90%,95%{opacity:1}}
+.rk7 .orbmini:before,.rk7 .orbmini:after{inset:-6px;border-radius:50%;border:1px solid var(--c);animation:halo2 2s infinite}
+.rk7 .orbmini:after{animation-delay:1s}
+@keyframes halo2{from{transform:scale(.8);opacity:1}to{transform:scale(2.2);opacity:0}}
+/* tiap ranah punya tema reveal sendiri */
+.rk1{background:radial-gradient(circle at 50% 55%,#3a2a22,#0d0c10 50%,#030305)!important;--la:slam}
+.rk2{background:radial-gradient(circle at 50% 50%,#12352a,#07100d 50%,#020403)!important;--la:wave}
+.rk3{background:radial-gradient(circle at 50% 50%,#142a55,#070b18 50%,#020308)!important;--la:build}
+.rk4{background:radial-gradient(circle at 50% 50%,#3a1c63,#0b0715 50%,#030208)!important;--la:zoomG}
+.rk5{background:radial-gradient(circle at 50% 60%,#5a3510,#150c05 50%,#040201)!important;--la:bloom}
+.rk6{background:radial-gradient(circle at 50% 50%,#4a0f33,#0e0309 50%,#030103)!important;--la:glitch}
+.rk6 h2{text-shadow:-3px 0 #00e5ff,3px 0 #ff2d6f,0 0 30px var(--g)!important}
+.rk1 h2{color:#eef1f8!important;text-shadow:0 3px 0 #555,0 0 24px #ff8a3a!important}
+@keyframes slam{from{opacity:0;transform:translateY(-140px) scale(2)}60%{transform:translateY(8px) scale(.95)}}
+@keyframes wave{from{opacity:0;transform:translateX(-70px) skewX(-20deg)}}
+@keyframes build{from{opacity:0;transform:scaleY(0) translateY(40px);transform-origin:bottom}}
+@keyframes zoomG{from{opacity:0;transform:scale(.1)}}
+@keyframes bloom{from{opacity:0;transform:rotate(-90deg) scale(.2)}}
+@keyframes glitch{0%{opacity:0;transform:translateX(-30px) skewX(30deg)}30%{opacity:1;transform:translateX(24px) skewX(-20deg)}55%{transform:translateX(-10px)}}
+@keyframes descend{from{opacity:0;transform:translateY(-90px) scale(1.6)}}
+.rk7{--la:descend}
+.result-screen.divine{background:radial-gradient(circle at 50% 45%,#7a5214,#20130a 18%,#050404 55%,#010101)!important}
+
+/* ===== V6 ===== */
+.mbtn{background:transparent;border:1px solid #ffffff22;color:#c9b0ff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;transition:.2s}.mbtn.on{color:#fff;border-color:#c9a3ff;box-shadow:0 0 14px #8a55f0}
+.stat i{font-style:normal;color:#8fd3ff}
+.banners{margin-top:42px;display:flex;gap:10px}
+.bn{flex:1;display:flex;gap:14px;align-items:center;padding:14px 20px;border:1px solid #ffffff14;background:#0d0c17;cursor:pointer;color:#fff;text-align:left;transition:.25s;border-radius:4px}
+.bn:hover{transform:translateY(-2px)}.bn.on{border-color:#c9a3ff;background:linear-gradient(110deg,#1b1336,#0d0c17);box-shadow:0 0 30px #7650c133}
+.bn.ev.on{border-color:#ffd36a;background:linear-gradient(110deg,#3a2a0c,#0d0c17);box-shadow:0 0 34px #ffcf5533}
+.bn b{font:600 14px Cinzel;display:block}.bn small{font-size:9px;color:#9a97b4;letter-spacing:1px;display:block;margin-top:5px}.bn .cn{font:36px "Ma Shan Zheng";color:#e1be76}
+.bn svg{height:64px;width:auto;flex:none}
+.summon-panel{margin-top:10px}.summon-panel.ev{border-color:#ffd36a55;background:linear-gradient(110deg,#2a1d08,#1a1334,#0a0a12)}
+.section-head.sp{margin-top:70px}.ccount{font:14px Cinzel;color:#c9b0ff}
+.daily{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.dcard{padding:16px;background:#0d0d18;border:1px solid #ffffff12;border-radius:4px;display:flex;flex-direction:column;gap:8px}
+.dcard b{font:600 12px Cinzel}.dcard small{font-size:9px;color:#8a889d}
+.dcard i{display:block;height:3px;background:#181726}.dcard u{display:block;height:100%;background:linear-gradient(90deg,#6f3fe5,#d1a7ff);text-decoration:none}
+.dbtn{margin-top:auto;padding:9px;border:1px solid #c9a3ff66;background:#2a1a50;color:#fff;font-size:9px;letter-spacing:2px;cursor:pointer}.dbtn:disabled{opacity:.35;cursor:default}
+.dcard.login{border-color:#ffd36a55;background:linear-gradient(135deg,#2a1d08,#0d0d18)}
+.codex{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cc{padding:12px 10px;background:linear-gradient(180deg,#14142a,#080811);border:1px solid #ffffff12;border-top:2px solid var(--c);border-radius:4px;text-align:center}
+.cc svg{display:block;margin:0 auto}.cc b{display:block;font:600 11px Cinzel;color:var(--c);margin-top:6px}.cc small{display:block;font-size:8px;color:#8a889d;margin-top:4px;line-height:1.6}
+.cc.off{border-top-color:#333}.cc.off svg{filter:brightness(0);opacity:.35}.cc.off b{color:#555}
+.cc .st{color:#ffd36a;font-size:9px;letter-spacing:2px;margin-top:4px}.cc.feat{box-shadow:0 0 22px -6px #ffd36a}
+.up{margin-top:8px;width:100%;padding:7px;font-size:8px;letter-spacing:1px;background:#1d1538;color:#fff;border:1px solid var(--c);cursor:pointer}.up:disabled{opacity:.35;cursor:default}
+.portrait{width:max-content;margin:0 auto;animation:inkIn 1s both}
+.continue{margin:0 4px}.ghost{border-color:#c9a3ff88;color:#c9b0ff}
+@media(max-width:700px){.banners{flex-direction:column}}
+
+/* ===== V6.1: fokus, pengaturan, mode kurangi efek ===== */
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+button:focus-visible{outline-offset:2px}
+.cinematic-skip{font-family:inherit}
+.modal{position:fixed;inset:0;z-index:250;display:grid;place-items:center;padding:16px;background:#02020acc}
+.modal-box{width:min(420px,100%);max-height:calc(100% - 8px);overflow:auto;padding:22px;background:#0d0b18;border:1px solid #ffffff22;box-shadow:0 0 40px #000}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.modal-head h2{margin:0;font:600 18px Cinzel,serif;letter-spacing:2px;color:var(--gold)}
+.modal .x{width:34px;height:34px;border:1px solid #ffffff22;border-radius:50%;background:transparent;color:#ddd;cursor:pointer;font-size:14px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 0;border-top:1px solid #ffffff10;font-size:13px;color:#d8d2ea}
+.set-row small{color:#8d86a8;font-size:10px}
+.set-row input[type=range]{width:50%;accent-color:#c7a1ff}
+.set-row input[type=checkbox]{width:20px;height:20px;accent-color:#c7a1ff;flex:none}
+.set-btns{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0 6px;border-top:1px solid #ffffff10}
+.sbtn{flex:1;min-width:110px;padding:11px 12px;border:1px solid #c9a3ff66;background:#2a1a50;color:#fff;font:inherit;font-size:10px;letter-spacing:2px;cursor:pointer}
+.sbtn.danger{border-color:#ff6a8a88;background:#3a1020}
+.set-note{min-height:18px;margin:8px 0 0;font-size:11px;color:#bda9e8}
+body.calm .whiteout,body.calm .slash{display:none!important}
+body.calm *,body.calm :before,body.calm :after{animation-duration:.01s!important;animation-iteration-count:1!important}
+
+/* =====================================================================
+   V7 — animasi gacha, ringkasan kartu, variasi tampilan
+   ===================================================================== */
+
+/* ---- warna ambient halaman (berubah per section / hover ranah) ---- */
+body{--tint:#6a3dd0}
+body[data-sec=realms]{--tint:#3b6fe0}
+body[data-sec=banner]{--tint:#d9a441}
+body[data-sec=alchemy]{--tint:#d97724}
+body[data-sec=daily]{--tint:#1fae7a}
+body[data-sec=divine]{--tint:#c0392b}
+body[data-sec=tower]{--tint:#8e44ad}
+body[data-sec=codex]{--tint:#8a45e0}
+body[data-sec=history]{--tint:#c23a5a}
+.tint{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--tint);opacity:.2;
+ -webkit-mask-image:radial-gradient(75% 60% at 50% 18%,#000,transparent 75%);mask-image:radial-gradient(75% 60% at 50% 18%,#000,transparent 75%);
+ transition:background-color 1.2s ease}
+.stars{inset:-100px 0;transform:translate3d(0,calc(var(--sy,0)*-.05px),0)}
+
+/* ---- ritual: segel 道 menjadi orb yang berganti warna mengikuti ranah ---- */
+.seal{background:radial-gradient(circle closest-side,#fff 0,var(--oc,#9b7bff) 58%,color-mix(in srgb,var(--oc,#9b7bff) 32%,#120a26) 100%);box-shadow:0 0 70px var(--og,#9e72ff);
+ transition:transform .3s cubic-bezier(.2,1.7,.4,1),opacity 1s,box-shadow .3s}
+.ritual.on .seal,.ritual.on.stage2 .seal{animation:none;transform:translate(-50%,-50%) scale(var(--os,1));box-shadow:0 0 90px var(--og,#9e72ff)}
+.ritual.on.stage3 .seal{animation:impact .9s ease-out forwards}
+.ritual.on.low.stage3 .seal{animation:sealFade .55s ease-out forwards}
+@keyframes sealFade{to{transform:translate(-50%,-50%) scale(calc(var(--os,1)*1.8));opacity:0}}
+.ritual.low.stage3 .pillar-light{opacity:0}
+.ritual.low .slash{display:none}
+.whiteout{background:radial-gradient(circle,#fff 30%,var(--pc,#e5d6ff) 100%)}
+.pips{position:absolute;left:50%;top:calc(11vh + 22px);transform:translateX(-50%);display:flex;gap:13px;z-index:9;opacity:0;transition:opacity .5s}
+.ritual.on .pips{opacity:1}
+.ritual.stage4 .pips{opacity:0}
+.pips i{width:9px;height:9px;border:1px solid #ffffff55;transform:rotate(45deg);transition:transform .25s cubic-bezier(.2,1.7,.4,1),background .25s,box-shadow .25s}
+.pips i.on{background:var(--c);border-color:var(--c);box-shadow:0 0 12px var(--c)}
+.pips i.hot{transform:rotate(45deg) scale(1.6);box-shadow:0 0 22px var(--c)}
+
+/* ---- ringkasan kartu ×10 (flip berurutan) ---- */
+.summary{position:fixed;inset:0;z-index:120;background:radial-gradient(circle at 50% 25%,#1c1240,#05040c 70%);overflow:auto;display:flex;flex-direction:column;align-items:center;padding:34px 16px 44px}
+.sum-head{text-align:center;margin-bottom:22px}
+.sum-head small{font:9px Cinzel;letter-spacing:6px;color:#8b89a0}
+.sum-head h2{font:500 30px Cinzel,serif;margin:8px 0 0}
+.sum-head em{font-style:normal;color:#c9a3ff;text-shadow:0 0 30px #7b4bd2}
+.sum-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:min(920px,100%)}
+.fc{perspective:800px;aspect-ratio:3/4.1;min-height:130px}
+.fi{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:flipIn .75s var(--d,0s) cubic-bezier(.2,.8,.2,1) both}
+@keyframes flipIn{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
+.fb,.ff{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;overflow:hidden}
+.fb{transform:rotateY(180deg);background:repeating-linear-gradient(45deg,#16102e 0 6px,#1d1540 6px 12px);border:1px solid var(--c);box-shadow:0 0 16px -4px var(--c),inset 0 0 22px #000}
+.fb span{font:46px "Ma Shan Zheng",serif;color:var(--c);text-shadow:0 0 18px var(--c)}
+.ff{background:linear-gradient(180deg,#14142a,#080811);border:1px solid var(--c);box-shadow:0 0 22px -6px var(--c)}
+.ff b{font:600 10px Cinzel;color:var(--c);padding:0 4px}
+.ff small{font-size:8px;color:#8a889d}
+.ff .nw{position:absolute;top:5px;right:5px;font:700 7px Cinzel;letter-spacing:1px;padding:2px 5px;background:#ffd36a;color:#2a1d08;border-radius:2px}
+.fc.cr5 .ff,.fc.cr6 .ff,.fc.cr7 .ff{box-shadow:0 0 34px -2px var(--c)}
+.fc.cr7 .ff{border-width:2px;background:linear-gradient(180deg,#3a2a08,#0a0810)}
+.fc.cr6 .ff{background:linear-gradient(180deg,#2a0f24,#0a0810)}
+.fc.cr5 .ff:after,.fc.cr6 .ff:after,.fc.cr7 .ff:after{content:"";position:absolute;inset:-60% -30%;background:linear-gradient(100deg,transparent 42%,#ffffff33 50%,transparent 58%);transform:translateX(-70%);animation:sheen 4s 1.2s ease-in-out infinite}
+.sum-continue{margin-top:26px;padding:14px 26px;background:transparent;color:#ddd;border:1px solid #ffffff44;cursor:pointer;letter-spacing:2px;font:10px Inter,Arial,sans-serif;animation:fadeUp .8s var(--dl,3s) both}
+.sum-continue:hover{border-color:#c9a3ff;color:#fff}
+@keyframes sheen{0%,40%{transform:translateX(-70%)}75%,100%{transform:translateX(70%)}}
+
+/* ---- tangga ranah: kartu makin tinggi, makin langka ---- */
+@media(min-width:901px){.realm-grid{align-items:end}.realm:nth-child(1){min-height:150px}.realm:nth-child(2){min-height:176px}.realm:nth-child(3){min-height:202px}.realm:nth-child(4){min-height:228px}.realm:nth-child(5){min-height:254px}.realm:nth-child(6){min-height:280px}.realm:nth-child(7){min-height:306px}}
+.realm:after{content:attr(data-n);position:absolute;right:4px;bottom:-8px;font:72px/1 "Ma Shan Zheng",serif;color:var(--c);opacity:.09;pointer-events:none}
+
+/* ---- banner event berkilau ---- */
+.bn{position:relative;overflow:hidden}
+.bn.ev.on{background:linear-gradient(110deg,#3a2a0c,#6a4a14 45%,#3a2a0c);background-size:220% 100%;animation:bnShift 7s linear infinite}
+.bn.ev.on:after,.bn.on:not(.ev):after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,#ffe9a055 50%,transparent 60%);transform:translateX(-120%);animation:bnSheen 4.5s ease-in-out infinite;pointer-events:none}
+.bn.on:not(.ev):after{background:linear-gradient(105deg,transparent 40%,#c9a3ff40 50%,transparent 60%)}
+@keyframes bnShift{to{background-position:220% 0}}
+@keyframes bnSheen{0%,35%{transform:translateX(-120%)}70%,100%{transform:translateX(120%)}}
+
+/* ---- misi harian bergaya jimat kertas ---- */
+.dcard{position:relative;overflow:hidden;padding:18px 16px 16px 44px;background:linear-gradient(160deg,#e3cf9a,#c9ab69 62%,#b8984f);color:#3a1a10;border:1px solid #8a5a22;border-radius:3px;box-shadow:0 10px 26px -12px #000c}
+.dcard:before{content:"敕令";position:absolute;left:9px;top:12px;writing-mode:vertical-rl;font:20px "Ma Shan Zheng",serif;letter-spacing:6px;color:#b3261e;opacity:.85}
+.dcard:after{content:"";position:absolute;right:-20px;top:-20px;width:64px;height:64px;border-radius:50%;border:3px solid #b3261e44;box-shadow:inset 0 0 0 7px #b3261e14}
+.dcard b{color:#3a1a10}
+.dcard small{color:#6b4a2a}
+.dcard i{background:#3a1a1022}
+.dcard u{background:linear-gradient(90deg,#b3261e,#e0603a)}
+.dbtn{position:relative}
+.dcard .dbtn{background:#7a1b14;border-color:#b3261e;color:#fbe9c0}
+.dcard .dbtn:disabled{opacity:.75;background:#6b4a2a2e;border-color:#6b4a2a88;color:#5a3a1a}
+.dcard.login{background:linear-gradient(160deg,#f0d98c,#dcb356 62%,#c99a38);border-color:#b3261e}
+
+/* ---- bingkai codex per rarity ---- */
+.cc{position:relative;overflow:hidden}
+.cc.cr3,.cc.cr4{box-shadow:0 0 18px -10px var(--c)}
+.cc.cr5{background:linear-gradient(180deg,#241a0c,#0a0810);box-shadow:0 0 0 1px #ffc15a44,0 0 22px -8px #ffc15a}
+.cc.cr6{background:linear-gradient(180deg,#2a0f24,#0a0810);box-shadow:0 0 0 1px #ff67b055,0 0 26px -8px #ff67b0}
+.cc.cr7{background:linear-gradient(180deg,#3a2a08,#0a0810);box-shadow:0 0 0 1px #ffdc4c66,0 0 30px -6px #ffdc4c;border-top-width:3px}
+.cc.cr5:after,.cc.cr6:after,.cc.cr7:after{content:"";position:absolute;inset:-60% -30%;background:linear-gradient(100deg,transparent 42%,#ffffff2e 50%,transparent 58%);transform:translateX(-70%);animation:sheen 5s ease-in-out infinite;pointer-events:none}
+.cc.off:after{display:none}
+.cc.off{box-shadow:none}
+
+/* ---- penanda section: kanji raksasa + garis + reveal ---- */
+.section-head{position:relative}
+.section-head[data-k]:before{content:attr(data-k);position:absolute;left:-4px;top:-48px;font:130px/1 "Ma Shan Zheng",serif;color:var(--tint);opacity:.07;pointer-events:none;transition:color 1.2s}
+.section-head:after{content:"";position:absolute;left:0;bottom:-12px;width:min(260px,60%);height:1px;background:linear-gradient(90deg,var(--tint),transparent);opacity:.5;transition:background .6s}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---- hero: lentera, bangau, parallax ---- */
+.lanterns,.cranes{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.lanterns i{position:absolute;bottom:-40px;width:14px;height:20px;border-radius:5px 5px 7px 7px;background:linear-gradient(#ffb85a,#e0642a);box-shadow:0 0 16px 4px #ff9a4a88;opacity:0;animation:lift var(--t,24s) linear var(--dl,0s) infinite}
+@keyframes lift{0%{transform:translate(0,0) scale(var(--s,1));opacity:0}8%{opacity:.9}50%{transform:translate(calc(var(--sw,30px)*-1),-380px) scale(var(--s,1))}92%{opacity:.7}100%{transform:translate(var(--sw,30px),-760px) scale(var(--s,1));opacity:0}}
+.cranes span{position:absolute;left:-60px;top:var(--y,20%);width:44px;opacity:0;animation:fly 34s linear var(--dl,0s) infinite}
+.cranes svg{display:block;width:100%;fill:#e9dcff;filter:drop-shadow(0 0 6px #a48cff);animation:flap .9s ease-in-out infinite alternate;transform-origin:50% 60%}
+@keyframes fly{0%{transform:translate(0,0) scale(var(--sc,1));opacity:0}6%{opacity:.8}94%{opacity:.8}100%{transform:translate(calc(100vw + 120px),-70px) scale(var(--sc,1));opacity:0}}
+@keyframes flap{to{transform:scaleY(.55)}}
+.m1{transform:translate(calc(var(--mx)*-32px),calc(var(--my)*-10px + var(--sy,0)*-.05px))}
+.m2{transform:translate(calc(var(--mx)*-20px),calc(var(--my)*-7px + var(--sy,0)*-.1px))}
+.m3{transform:translate(calc(var(--mx)*-10px),calc(var(--my)*-4px + var(--sy,0)*-.16px))}
+.moon{transform:translate(calc(var(--mx)*-14px),calc(var(--my)*-10px + var(--sy,0)*.22px))}
+
+/* ---- petunjuk tombol musik ---- */
+.mbtn.hint{animation:hintPulse 2s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{box-shadow:0 0 0 0 #c9a3ff00}50%{box-shadow:0 0 0 8px #c9a3ff44;border-color:#c9a3ff}}
+
+/* ---- HP: saldo Spirit Stones & Qi tetap terlihat ---- */
+@media(max-width:520px){
+ .stat{display:flex;gap:5px}
+ .stat small{display:none}
+ .top-stats{gap:8px}
+ .brand>div,.avatar{display:none}
+}
+@media(max-width:900px){.realm:nth-child(n){min-height:130px}.sum-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ---- mode "Kurangi efek" ---- */
+body.calm .lanterns,body.calm .cranes,body.calm .tint{display:none}
+body.calm .rv{opacity:1!important;transform:none!important}
+body.calm .mbtn.hint{animation:none}
+
+.caption b{text-shadow:0 0 22px #b77c25,0 0 60px #7b4bd2,0 2px 14px #000,0 0 3px #000}
+.caption small{text-shadow:0 0 8px #000,0 1px 4px #000}
+
+/* ---- Player Realm Topbar Badge ---- */
+.player-realm-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1f1438,#0d091a);border:1px solid #c9a3ff55;padding:6px 12px;border-radius:20px;cursor:pointer;color:#eee;transition:.25s;box-shadow:0 0 16px #7847d622}
+.player-realm-btn:hover{transform:translateY(-1px);border-color:#e1be76;box-shadow:0 0 20px #e1be7644}
+.player-realm-btn .pr-icon{font-size:16px;color:#e1be76}
+.player-realm-btn small{display:block;font-size:7px;letter-spacing:1px;color:#9b97b8;text-align:left}
+.player-realm-btn b{font-size:11px;color:#f3e8ff;display:block;font-family:Cinzel,serif}
+
+/* ---- Fast Summon Toggle ---- */
+.fast-toggle{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:10px;color:#bca9e2;cursor:pointer;user-select:none}
+.fast-toggle input{width:15px;height:15px;accent-color:#c9a3ff;cursor:pointer}
+
+/* ---- Paviliun Alkimia (Tungku Pil) ---- */
+.alchemy-count-stat{font:12px Cinzel,serif;color:#e1be76}
+.alchemy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:8px}
+.alc-card{padding:18px;background:linear-gradient(160deg,#1c121e,#0a0812);border:1px solid #d9772444;border-top:2px solid #e08422;border-radius:4px;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden;box-shadow:0 10px 30px #0008}
+.alc-card:before{content:"丹";position:absolute;right:8px;bottom:-12px;font:80px/1 "Ma Shan Zheng",serif;color:#d97724;opacity:.06;pointer-events:none}
+.alc-top b{font:600 15px Cinzel,serif;color:#ffba66;display:block}
+.alc-top small{font-size:9px;color:#9e8b7d;display:block;letter-spacing:1px}
+.alc-desc{font-size:11px;color:#b0a8be;line-height:1.5;margin:0}
+.alc-cost,.alc-yield{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #ffffff0a;font-size:11px}
+.alc-cost small,.alc-yield small{font-size:8px;color:#857f98;letter-spacing:1px}
+.alc-cost b{color:#62e0a0}
+.alc-yield b{color:#ffd36a}
+.alc-btn{margin-top:8px;padding:10px;border:1px solid #d9772488;background:linear-gradient(135deg,#3d1f0a,#66320a);color:#fff2d6;font-size:10px;letter-spacing:2px;font-weight:700;cursor:pointer;transition:.2s}
+.alc-btn:hover{background:linear-gradient(135deg,#542b0e,#8a440e);box-shadow:0 0 16px #d9772455}
+.alc-btn:disabled{opacity:.35;cursor:default;box-shadow:none}
+
+/* ---- Codex Controls (Filter & Search) ---- */
+.codex-controls{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.codex-filters{display:flex;gap:6px;flex-wrap:wrap}
+.cfilter{padding:6px 12px;background:#0d0c18;border:1px solid #ffffff18;color:#9b97b4;font-size:9px;letter-spacing:1.5px;cursor:pointer;border-radius:3px;transition:.2s}
+.cfilter:hover{color:#fff;border-color:#c9a3ff66}
+.cfilter.active{background:#2a1a50;color:#f0e4ff;border-color:#c9a3ff;box-shadow:0 0 12px #8a55f044}
+.codex-search-box input{padding:7px 12px;background:#090812;border:1px solid #ffffff20;color:#eee;font:11px Inter,Arial,sans-serif;border-radius:3px;min-width:200px;transition:.2s}
+.codex-search-box input:focus{border-color:#e1be76;outline:none;box-shadow:0 0 12px #e1be7633}
+.cc{cursor:pointer;transition:transform .2s,box-shadow .2s}
+.cc:hover{transform:translateY(-2px);box-shadow:0 8px 24px #000}
+
+/* ---- Modal Kultivasi Pemain ---- */
+.trib-box{max-width:460px;background:radial-gradient(circle at 50% 10%,#251540,#0a0812 70%);border-color:#c9a3ff44;box-shadow:0 0 60px #5c2fa855}
+.trib-body{display:flex;flex-direction:column;gap:14px;text-align:center;padding:10px 0}
+.trib-avatar-big{width:70px;height:70px;margin:0 auto 10px;border-radius:50%;border:2px solid #e1be76;display:grid;place-items:center;font:38px "Ma Shan Zheng",serif;color:#e1be76;background:radial-gradient(circle,#3c2670,#0d0b1a);box-shadow:0 0 30px #e1be7644}
+.trib-badge-wrap b{font:600 20px Cinzel,serif;color:#fff;display:block}
+.trib-badge-wrap small{font-size:9px;letter-spacing:3px;color:#c9a3ff;display:block;margin-top:4px}
+.trib-desc{font-size:12px;color:#aaa6c4;line-height:1.6;margin:0}
+.trib-perks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:5px 0}
+.trib-perk{padding:10px;background:#130e24;border:1px solid #ffffff12;border-radius:4px}
+.trib-perk span{font-size:8px;color:#857e9e;letter-spacing:1px;display:block}
+.trib-perk b{font:600 13px Cinzel;color:#62e0a0;display:block;margin-top:4px}
+.trib-progress-wrap{text-align:left}
+.trib-prog-head{display:flex;justify-content:space-between;margin-bottom:6px;font-size:10px}
+.trib-prog-head small{color:#8b86a6;letter-spacing:1px}
+.trib-prog-head b{color:#e1be76}
+.trib-prog-bar{height:6px;background:#181328;border-radius:3px;overflow:hidden}
+.trib-prog-bar u{display:block;height:100%;background:linear-gradient(90deg,#6f3fe5,#e1be76);transition:width .4s}
+.trib-btn{padding:14px;border:1px solid #e1be7688;background:linear-gradient(135deg,#3f257a,#7547cc);color:#fff;font:600 11px Cinzel,serif;letter-spacing:2px;cursor:pointer;border-radius:3px;box-shadow:0 0 25px #7547cc55;transition:.2s}
+.trib-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 40px #e1be7666}
+.trib-btn:disabled{opacity:.4;cursor:default}
+
+/* ---- Modal Detail Karakter ---- */
+.char-box{max-width:440px;background:radial-gradient(circle at 50% 15%,#201538,#080710 75%);border-color:#ffffff22}
+.char-detail-body{display:flex;flex-direction:column;gap:12px;text-align:center;padding:5px 0}
+.char-portrait-wrap svg{display:block;margin:0 auto;filter:drop-shadow(0 0 20px #8254d666)}
+.char-rarity-badge{font-size:9px;letter-spacing:4px;font-weight:700}
+.char-header-info h3{font:600 22px Cinzel,serif;margin:4px 0 2px}
+.char-header-info small{font-size:10px;color:#9b96b2;letter-spacing:1px}
+.char-stars{color:#ffd36a;font-size:13px;letter-spacing:3px;margin-top:4px}
+.char-lore-box{padding:12px 14px;background:#0f0d1c;border-left:2px solid #e1be76;border-radius:2px;text-align:left}
+.char-lore-box small{font-size:7px;letter-spacing:2px;color:#e1be76;display:block;margin-bottom:4px}
+.char-lore-box p{font-size:11px;color:#b6b2cb;line-height:1.6;margin:0;font-style:italic}
+.char-skill-box{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#141126;border:1px solid #ffffff10;border-radius:3px;font-size:11px}
+.char-skill-box small{font-size:8px;color:#7e7898;letter-spacing:1px}
+.char-skill-box b{color:#c9a3ff}
+.char-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.char-stat-card{padding:8px;background:#100d20;border:1px solid #ffffff0c;border-radius:3px}
+.char-stat-card small{font-size:8px;color:#7e7898;display:block}
+.char-stat-card b{font:600 13px Cinzel;color:#fff;display:block;margin-top:3px}
+.char-up-btn{margin-top:4px;padding:12px;font-size:10px;letter-spacing:2px}
+
+/* ---- Result Actions ---- */
+.result-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.continue.gold{background:linear-gradient(135deg,#5e380f,#c78c2e);border-color:#e1be76;color:#fff;font-weight:700;box-shadow:0 0 25px #c78c2e55}
+.continue.gold:hover{background:linear-gradient(135deg,#7a4914,#df9e35);box-shadow:0 0 40px #e1be7688}
+
+@media(max-width:520px){
+ .player-realm-btn small{display:none}
+ .player-realm-btn{padding:5px 8px}
+ .codex-controls{flex-direction:column;align-items:stretch}
+ .codex-search-box input{width:100%}
+ .tower-card-visual{flex-direction:column;text-align:center}
+ .divine-banner{flex-direction:column;align-items:stretch;text-align:center}
+}
+
+/* =====================================================================
+   V9 Spektakuler: Flying Sword, Shatter, Holo Foil, Divination, Tower
+   ===================================================================== */
+
+/* ---- Kursor Pedang Rohani & Riak Dao ---- */
+.sword-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:900}
+
+/* ---- Retakan Dimensi Kosmik (Dimensional Shatter) ---- */
+.shatter-fx{position:fixed;inset:0;z-index:350;pointer-events:none;overflow:hidden}
+.shatter-shard{position:absolute;background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(200,160,255,.6) 50%,rgba(100,220,255,.8));box-shadow:0 0 30px rgba(255,255,255,.9),inset 0 0 20px rgba(255,255,255,.9);clip-path:polygon(var(--cp));animation:shatterBurst .8s cubic-bezier(.1,.9,.2,1) forwards}
+@keyframes shatterBurst{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.25) rotate(var(--rot))}}
+
+/* ---- Kartu Holographic 3D Foil Shimmer ---- */
+.portrait-card-wrap{position:relative;width:max-content;margin:0 auto;perspective:1000px}
+.holo-foil{position:absolute;inset:-6px;border-radius:14px;background:linear-gradient(115deg,transparent 20%,rgba(255,100,200,.3) 36%,rgba(255,255,100,.4) 48%,rgba(100,220,255,.35) 60%,transparent 80%);background-size:200% 200%;mix-blend-mode:color-dodge;pointer-events:none;opacity:0;transition:opacity .35s;z-index:4}
+.portrait-card-wrap:hover .holo-foil,.result-screen.divine .holo-foil{opacity:1;animation:holoShift 3.5s linear infinite}
+@keyframes holoShift{0%{background-position:0% 0%}50%{background-position:100% 100%}100%{background-position:0% 0%}}
+
+/* ---- Ramalan Takdir Bambu Langit (天机签) ---- */
+.divine-active-badge{font:12px Cinzel,serif;color:#ff9a76}
+.divine-banner{padding:22px;background:linear-gradient(135deg,#241014,#0c0812);border:1px solid #c0392b44;border-top:2px solid #e74c3c;border-radius:4px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 10px 30px #0008}
+.divine-intro b{font:600 15px Cinzel,serif;color:#ffb8a8;display:block}
+.divine-intro p{font-size:11px;color:#a8979e;margin:6px 0 0;max-width:560px;line-height:1.6}
+.divine-btn{padding:14px 22px;border:1px solid #e74c3c88;background:linear-gradient(135deg,#5e1b17,#8c2720);color:#fff;font:600 11px Cinzel,serif;letter-spacing:2px;cursor:pointer;border-radius:3px;box-shadow:0 0 20px #c0392b44;transition:.2s;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.divine-btn:hover{transform:translateY(-2px);box-shadow:0 0 35px #e74c3c77}
+
+.divine-box{max-width:440px;background:radial-gradient(circle at 50% 20%,#301518,#0a060e 75%);border-color:#e74c3c44}
+.divine-body{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;padding:12px 0}
+.divine-cylinder{width:90px;height:140px;position:relative}
+.bamboo-tube{width:100%;height:100%;background:linear-gradient(180deg,#8b5a2b,#5c3818);border-radius:6px 6px 14px 14px;border:2px solid #b37d47;box-shadow:0 10px 25px #000,inset 0 4px 10px #381f08;display:flex;align-items:center;justify-content:center;position:relative}
+.bamboo-tube.shaking{animation:tubeRattle .6s ease-in-out infinite}
+@keyframes tubeRattle{0%,100%{transform:rotate(0deg) scale(1)}25%{transform:rotate(-12deg) translateY(-8px) scale(1.05)}75%{transform:rotate(12deg) translateY(-8px) scale(1.05)}}
+.tube-kanji{font:32px "Ma Shan Zheng",serif;color:#f39c12;text-shadow:0 0 10px #d35400}
+.bamboo-sticks{position:absolute;top:-25px;display:flex;gap:4px}
+.bamboo-sticks i{width:5px;height:38px;background:#d2b48c;border-radius:2px;box-shadow:0 0 4px #000}
+.divine-stick-result{padding:16px;background:#180d14;border:1px solid #e74c3c44;border-radius:4px;width:100%}
+.stick-tag{font:700 13px Cinzel,serif;color:#e74c3c;letter-spacing:3px}
+.divine-stick-result h3{font:20px "Ma Shan Zheng",serif;color:#f5b7b1;margin:8px 0;letter-spacing:2px}
+.divine-stick-result p{font-size:11px;color:#d7bde2;margin:0;line-height:1.5}
+.divine-action-btn{width:100%;padding:14px;border:1px solid #e74c3c88;background:linear-gradient(135deg,#5e1b17,#8c2720);color:#fff;font:600 11px Cinzel,serif;letter-spacing:2px;cursor:pointer;border-radius:3px}
+.divine-action-btn:disabled{opacity:.4;cursor:default}
+
+/* ---- Pagoda Sembilan Langit (九天宝塔) ---- */
+.tower-progress-stat{font:12px Cinzel,serif;color:#bb86fc}
+.tower-banner{padding:22px;background:linear-gradient(135deg,#1b122c,#0a0715);border:1px solid #8e44ad44;border-top:2px solid #a55eea;border-radius:4px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 10px 30px #0008}
+.tower-card-visual{display:flex;align-items:center;gap:18px}
+.tower-symbol{font:34px "Ma Shan Zheng",serif;color:#bb86fc;width:72px;height:72px;border:1px solid #bb86fc55;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#341a54,#0e071c);box-shadow:0 0 25px #8e44ad44;flex-shrink:0}
+.tower-info small{font-size:8px;color:#a29bfe;letter-spacing:2px;display:block}
+.tower-info h3{font:600 17px Cinzel,serif;color:#fff;margin:4px 0 2px}
+.tower-info p{font-size:11px;color:#9d95af;margin:0 0 8px}
+.tower-rewards{display:flex;gap:12px}
+.tw-rew{font-size:10px;color:#dfe6e9}.tw-rew b{color:#ffeaa7}
+.tower-action-box{display:flex;flex-direction:column;gap:10px;min-width:280px}
+.tower-team-preview small{font-size:7px;letter-spacing:1px;color:#817c9c;display:block;margin-bottom:4px}
+.tower-team-grid{display:flex;gap:6px}
+.tw-member{width:42px;height:42px;border-radius:4px;border:1px solid #bb86fc44;background:#150f24;display:grid;place-items:center;font-size:8px;color:#bb86fc;overflow:hidden}
+.tower-btn{padding:14px 22px;border:1px solid #bb86fc88;background:linear-gradient(135deg,#482570,#7d3c98);color:#fff;font:600 11px Cinzel,serif;letter-spacing:2px;cursor:pointer;border-radius:3px;box-shadow:0 0 25px #8e44ad44;transition:.2s}
+.tower-btn:hover{transform:translateY(-2px);box-shadow:0 0 35px #a55eea77}
+
+.tower-box{max-width:540px;background:radial-gradient(circle at 50% 15%,#261338,#090512 80%);border-color:#8e44ad55}
+.tower-battle-arena{display:flex;flex-direction:column;gap:12px;text-align:center}
+.battle-vs-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px;background:#120b1e;border-radius:4px}
+.battle-vs-bar .side{flex:1;text-align:left}
+.battle-vs-bar .boss-side{text-align:right}
+.battle-vs-bar small{font-size:8px;color:#a29bfe;display:block}
+.battle-vs-bar b{font:600 11px Cinzel;color:#fff}
+.hp-bar{height:7px;background:#23163a;border-radius:3px;overflow:hidden;margin-top:4px}
+.hp-bar u{display:block;height:100%;background:linear-gradient(90deg,#2ecc71,#62e0a0);transition:width .2s}
+.hp-bar.boss u{background:linear-gradient(90deg,#e74c3c,#ff7675)}
+.vs-badge{font:700 12px Cinzel;color:#ffd32a;padding:2px 8px;border:1px solid #ffd32a55;border-radius:3px}
+#towerCanvas{width:100%;height:200px;background:#080410;border:1px solid #ffffff12;border-radius:4px;display:block}
+.battle-log{font-size:10px;color:#b2bec3;min-height:22px;font-style:italic}
+.battle-result-wrap{padding:14px;background:#1a0f28;border:1px solid #ffd32a44;border-radius:4px;margin-top:4px}
+.battle-result-wrap h3{font:700 18px Cinzel;color:#ffd32a;margin:0 0 4px}
+.battle-result-wrap p{font-size:11px;color:#dfe6e9;margin:0 0 10px}
+/* ---- Tower Team Preview Cards (tt-card) ---- */
+.tt-card{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px;background:#15082a;border:1px solid #bb86fc44;border-radius:4px;font-size:8px;color:#d7bde2;flex:1;text-align:center;transition:.15s}
+.tt-card:hover{border-color:#bb86fc99;background:#1e0f38}
+.tt-card small{font-size:7px;letter-spacing:.5px;color:#a29bfe;display:block}
+.tt-card span{font-size:9px;color:#ffeaa7;font-weight:600}
+
+/* ---- Divine Badge Active State ---- */
+.divine-active-badge.active{color:#ffd32a;text-shadow:0 0 10px #ffd32a88}
+.divine-active-badge.active b{animation:divGlow 2s ease-in-out infinite}
+@keyframes divGlow{0%,100%{text-shadow:0 0 8px #e74c3caa}50%{text-shadow:0 0 20px #e74c3c,0 0 40px #e74c3c55}}
+
+/* ---- Continue Gold Button (Tower Claim) ---- */
+button.continue.gold{background:linear-gradient(135deg,#7d5a00,#c9930d);border:1px solid #ffd32a88;color:#fff9d4;font:700 11px Cinzel,serif;letter-spacing:2px;padding:12px 24px;border-radius:3px;cursor:pointer;transition:.2s;box-shadow:0 0 20px #c9930d44}
+button.continue.gold:hover{transform:translateY(-2px);box-shadow:0 0 35px #ffd32a77}
+
+/* ---- Summon Button disabled state ---- */
+.summon-btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}

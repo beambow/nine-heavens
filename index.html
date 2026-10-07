@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>九天 · Nine Heavens — Cultivation Gacha</title>
+<meta name="theme-color" content="#05040b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div><div class="stars" aria-hidden="true"></div><canvas id="fx" aria-hidden="true"></canvas><canvas id="swordCanvas" class="sword-canvas" aria-hidden="true"></canvas><div class="nebula n1" aria-hidden="true"></div><div class="nebula n2" aria-hidden="true"></div><div class="tint" aria-hidden="true"></div><div id="shatterFx" class="shatter-fx hidden" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="brand"><span class="brand-symbol">☯</span><div><b>NINE HEAVENS</b><small>九天 · CULTIVATION ARCHIVE</small></div></div>
+  <div class="top-stats">
+    <div class="stat"><span>✦</span><div><small>SPIRIT STONES</small><b id="stones">10,000</b></div></div>
+    <div class="stat"><span>☯</span><div><small>QI · <i id="qps">0/s</i></small><b id="qi">0</b></div></div>
+    <button id="pRealmBadge" class="player-realm-btn" type="button" title="Kultivasi Anda · Terobos Ranah" aria-label="Kultivasi Pemain" aria-haspopup="dialog">
+      <span class="pr-icon">☯</span><div><small>RANAH ANDA</small><b id="pRealmTxt">凡体 · Mortal</b></div>
+    </button>
+    <button id="musicBtn" class="mbtn" type="button" title="Musik" aria-label="Musik" aria-pressed="false">♪</button>
+    <button id="setBtn" class="mbtn" type="button" title="Pengaturan" aria-label="Pengaturan" aria-haspopup="dialog">⚙</button>
+    <div class="avatar" id="avatarIcon" title="Kultivator">道</div>
+  </div>
+</header>
+
+<main>
+<section class="cinema" data-sec="hero">
+  <div class="moon"><i></i></div><div class="vtext">九天之上 · 道法自然</div><div class="streak"></div>
+  <div class="mt m3"></div><div class="mist a"></div><div class="mt m2"></div><div class="mist b"></div><div class="mt m1"></div>
+  <div class="altar">
+    <div class="formation outer"></div><div class="formation mid"></div><div class="formation inner"></div>
+    <div class="formation rays"></div><div class="core">道</div>
+    <div class="pillar p1"></div><div class="pillar p2"></div><div class="pillar p3"></div><div class="pillar p4"></div>
+  </div>
+  <div class="hero-text">
+    <div class="kanji">天 · 命 · 轮 · 回</div>
+    <div class="eyebrow">THE HEAVENS HAVE OPENED</div>
+    <h1>Awaken Your<br><em>Destiny</em></h1>
+    <p>Setiap jiwa memiliki ranah yang menunggunya.<br>Tarik takdirmu dan lihat hukum langit bergetar.</p>
+    <button id="summonMain" class="summon-main"><span>✦</span> AWAKEN DESTINY <small>100 STONES</small></button>
+  </div>
+  <div class="scroll-hint">SCROLL TO INSPECT THE HEAVENS <i>↓</i></div>
+</section>
+
+<section class="dashboard">
+  <div class="section-head" data-k="境" data-sec="realms"><div><small>THE PATH OF CULTIVATION</small><h2>Seven <em>Realms</em></h2></div><div class="pity-box"><span>PITY</span><b id="pityText">0 / 50</b><i><u id="pityBar"></u></i></div></div>
+  <div class="realm-grid" id="realmGrid"></div>
+
+  <div id="banners" class="banners" data-sec="banner"></div>
+  <div class="summon-panel">
+    <div class="panel-copy">
+      <small>DESTINY SUMMON</small>
+      <h2>Call upon the <em>Heavens</em></h2>
+      <p>Sepuluh tarikan menghemat Spirit Stones dan menjamin setidaknya <b>Spirit Realm</b>.</p>
+      <label class="fast-toggle" for="cFast">
+        <input type="checkbox" id="cFast">
+        <span>Mode Cepat (Lewati Animasi)</span>
+      </label>
+    </div>
+    <div class="buttons">
+      <button id="single" class="summon-btn violet"><strong>SUMMON ×1</strong><span>100 ✦</span></button>
+      <button id="multi" class="summon-btn gold"><strong>SUMMON ×10</strong><span>900 ✦ · GUARANTEED</span></button>
+    </div>
+  </div>
+
+  <div class="section-head sp" data-k="丹" data-sec="alchemy"><div><small>SPIRITUAL ALCHEMY</small><h2>Alchemy <em>Pavilion</em></h2></div><div class="alchemy-count-stat"><small>TOTAL DIRACIK</small><b id="pillsCount">0 Pil</b></div></div>
+  <div id="alchemy" class="alchemy-grid"></div>
+
+  <div class="section-head sp" data-k="令" data-sec="daily"><div><small>DAILY DESTINY</small><h2>Daily <em>Rituals</em></h2></div></div>
+  <div id="daily" class="daily"></div>
+
+  <div class="section-head sp" data-k="签" data-sec="divine"><div><small>DAO DIVINATION</small><h2>Heaven's <em>Decree</em></h2></div><div id="divineBadge" class="divine-active-badge"><small>BUFF TAKDIR</small><b id="divineBuffTxt">Belum Diramal</b></div></div>
+  <div class="divine-banner">
+    <div class="divine-intro">
+      <b>Kocok Tabung Ramalan Bambu Langit · 天机签</b>
+      <p>Guncang tabung bambu kuno untuk memohon petunjuk hukum langit sembilan alam. Memberikan berkah suci selama 24 jam.</p>
+    </div>
+    <button type="button" id="openDivineBtn" class="divine-btn"><span>☯</span> KONSULTASI TAKDIR HARI INI</button>
+  </div>
+
+  <div class="section-head sp" data-k="塔" data-sec="tower"><div><small>TRIAL OF NINE HEAVENS</small><h2>Pagoda <em>Sembilan Langit</em></h2></div><div class="tower-progress-stat"><small>LANTAI SAAT INI</small><b id="towerFloorTxt">Lantai 1 / 50</b></div></div>
+  <div class="tower-banner">
+    <div class="tower-card-visual">
+      <div class="tower-symbol">九天塔</div>
+      <div class="tower-info">
+        <small id="towerBossTitle">BOSS LANTAI 1</small>
+        <h3 id="towerBossName">Serigala Roh Salju · Frost Spirit Wolf</h3>
+        <p id="towerBossDesc">Siluman penjaga dasar pagoda dengan cakar es spiritual.</p>
+        <div class="tower-rewards">
+          <span class="tw-rew">✦ <b id="towerRewardStones">500 Stones</b></span>
+          <span class="tw-rew">☯ <b id="towerRewardQi">+2.000 Qi</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="tower-action-box">
+      <div class="tower-team-preview">
+        <small>FORMASI SPIRITUAL (3 KULTIVATOR TERKUAT)</small>
+        <div id="towerTeamGrid" class="tower-team-grid"></div>
+      </div>
+      <button type="button" id="towerChallengeBtn" class="tower-btn">TANTANG LANTAI INI ⚔</button>
+    </div>
+  </div>
+
+  <div class="section-head sp" data-k="录" data-sec="codex"><div><small>CULTIVATOR CODEX</small><h2>Cultivator <em>Codex</em></h2></div><b id="codexCount" class="ccount">0/21</b></div>
+  <div class="codex-controls">
+    <div class="codex-filters" id="codexFilters">
+      <button type="button" class="cfilter active" data-f="all">SEMUA</button>
+      <button type="button" class="cfilter" data-f="owned">DIMILIKI</button>
+      <button type="button" class="cfilter" data-f="unowned">BELUM</button>
+      <button type="button" class="cfilter" data-f="high">IMMORTAL+</button>
+    </div>
+    <div class="codex-search-box">
+      <input type="text" id="codexSearch" placeholder="Cari nama / elemen..." aria-label="Cari kultivator">
+    </div>
+  </div>
+  <div id="codex" class="codex"></div>
+
+  <div class="history-section" data-sec="history">
+    <div class="section-head compact" data-k="命"><div><small>DESTINY RECORD</small><h2>Recent <em>Awakenings</em></h2></div></div>
+    <div id="history" class="history"><div class="empty">Belum ada jiwa yang terbangun.</div></div>
+  </div>
+</section>
+</main>
+
+<div id="ritual" class="ritual hidden" role="dialog" aria-modal="true" aria-label="Ritual summon">
+  <canvas id="rfx"></canvas><div class="ritual-vignette"></div>
+  <div class="bar top"></div><div class="bar bot"></div>
+  <button type="button" class="cinematic-skip" id="skip" aria-label="Lewati animasi (Esc)">SKIP <span>»</span></button>
+  <div class="stage-count" id="stageCount">01</div>
+  <div class="pips" id="pips" aria-hidden="true"></div>
+  <div class="seal"><span>道</span></div>
+  <div class="pillar-light" id="pillarLight"></div>
+  <div class="caption" aria-live="polite"><b id="capCn">天门将启</b><small id="capEn">THE HEAVENS ARE RESPONDING</small></div>
+  <div class="slash"></div><div class="whiteout"></div>
+</div>
+
+<div id="result" class="result-screen hidden" role="dialog" aria-modal="true" aria-labelledby="realmName">
+  <div class="divine-crown" id="divineCrown">✦　天　道　✦</div>
+  <div class="result-stars"></div><div class="rays-bg"></div><i class="ring r1"></i><i class="ring r2"></i><i class="ring r3"></i><canvas id="particles"></canvas>
+    <div id="portraitWrap" class="portrait-card-wrap">
+      <div id="portrait" class="portrait"></div>
+      <div class="holo-foil" id="holoFoil"></div>
+    </div>
+    <div id="rarity" class="rarity"></div>
+    <div id="realmChinese" class="chinese"></div>
+    <h2 id="realmName"></h2>
+    <div id="realmTag" class="tag"></div>
+    <p id="realmDesc"></p>
+    <div class="power"><span>SPIRIT PRESSURE</span><b id="realmPower"></b></div>
+    <div id="resultList" class="rlist"></div>
+    <div class="result-actions">
+      <button id="againBtn" type="button" class="continue gold">SUMMON AGAIN <span>✦</span></button>
+      <button id="shareBtn" class="continue ghost">SAVE CARD</button>
+      <button id="allBtn" type="button" class="continue ghost hidden">ALL RESULTS</button>
+      <button id="closeResult" class="continue">CONTINUE THE JOURNEY <span>→</span></button>
+    </div>
+  </div>
+</div>
+
+<div id="summary" class="summary hidden" role="dialog" aria-modal="true" aria-label="Semua hasil tarikan">
+  <div class="sum-head"><small>DESTINY RECORD</small><h2>Hasil <em>Tarikan ×10</em></h2></div>
+  <div id="sumGrid" class="sum-grid"></div>
+  <button type="button" id="sumClose" class="sum-continue">CONTINUE THE JOURNEY <span>→</span></button>
+</div>
+
+<div id="settings" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+  <div class="modal-box">
+    <div class="modal-head"><h2 id="setTitle">Pengaturan</h2><button type="button" id="setClose" class="x" aria-label="Tutup pengaturan">✕</button></div>
+    <label class="set-row" for="vMus"><span>Volume musik</span><input id="vMus" type="range" min="0" max="100" step="1"></label>
+    <label class="set-row" for="vSfx"><span>Volume efek suara</span><input id="vSfx" type="range" min="0" max="100" step="1"></label>
+    <label class="set-row" for="cMute"><span>Bisukan semua suara</span><input id="cMute" type="checkbox"></label>
+    <label class="set-row" for="cCalm"><span>Kurangi efek<br><small>kedip, guncangan, zoom, whiteout</small></span><input id="cCalm" type="checkbox"></label>
+    <div class="set-btns">
+      <button type="button" id="bExport" class="sbtn">EXPORT SAVE</button>
+      <button type="button" id="bImport" class="sbtn">IMPORT SAVE</button>
+      <button type="button" id="bReset" class="sbtn danger">RESET DATA</button>
+    </div>
+    <input id="fImport" type="file" accept="application/json,.json" hidden>
+    <p id="setNote" class="set-note" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<!-- Modal Kultivasi & Tribulation Pemain -->
+<div id="tribModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="tribTitle">
+  <div class="modal-box trib-box">
+    <div class="modal-head"><h2 id="tribTitle">Kultivasi Sang Pemain · 渡劫</h2><button type="button" id="tribClose" class="x" aria-label="Tutup modal">✕</button></div>
+    <div class="trib-body">
+      <div class="trib-badge-wrap"><div class="trib-avatar-big" id="tribAvatar">☯</div><b id="tribRealmName">凡体 · Body Tempering</b><small id="tribRealmTier">MORTAL</small></div>
+      <p id="tribDesc" class="trib-desc"></p>
+      <div class="trib-perks">
+        <div class="trib-perk"><span>BONUS QPS</span><b id="tribQpsBonus">+0%</b></div>
+        <div class="trib-perk"><span>BONUS LOGIN HARIAN</span><b id="tribDailyBonus">+0 Stones</b></div>
+      </div>
+      <div class="trib-progress-wrap">
+        <div class="trib-prog-head"><small>PERSYARATAN QI</small><b id="tribQiCost">0 / 0 Qi</b></div>
+        <div class="trib-prog-bar"><i><u id="tribBarFill"></u></i></div>
+      </div>
+      <button type="button" id="tribActionBtn" class="trib-btn">HADAPI KESENGSARAAN (TRIBULATION) ⚡</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detail Karakter Codex -->
+<div id="charModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="charName">
+  <div class="modal-box char-box">
+    <div class="modal-head"><h2 id="charTitle">Detail Kultivator</h2><button type="button" id="charClose" class="x" aria-label="Tutup modal">✕</button></div>
+    <div class="char-detail-body">
+      <div id="charPortraitWrap" class="char-portrait-wrap"></div>
+      <div class="char-header-info">
+        <div id="charRarityBadge" class="char-rarity-badge">✦ MORTAL ✦</div>
+        <h3 id="charName"></h3>
+        <small id="charCn"></small>
+        <div id="charStars" class="char-stars"></div>
+      </div>
+      <div class="char-lore-box">
+        <small>BIOGRAFI KULTIVASI</small>
+        <p id="charLore"></p>
+      </div>
+      <div class="char-skill-box">
+        <small>JURUS / ELEMEN</small>
+        <b id="charSkill"></b>
+      </div>
+      <div class="char-stats-grid">
+        <div class="char-stat-card"><small>LEVEL</small><b id="charLv">Lv 1</b></div>
+        <div class="char-stat-card"><small>KONTRIBUSI QI</small><b id="charQps">0/s</b></div>
+      </div>
+      <button type="button" id="charBreakthroughBtn" class="up char-up-btn">BREAKTHROUGH</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ramalan Bambu Langit -->
+<div id="divineModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="divineTitle">
+  <div class="modal-box divine-box">
+    <div class="modal-head"><h2 id="divineTitle">Ramalan Takdir Langit · 天机签</h2><button type="button" id="divineClose" class="x" aria-label="Tutup modal">✕</button></div>
+    <div class="divine-body">
+      <div id="divineCylinder" class="divine-cylinder">
+        <div class="bamboo-tube">
+          <span class="tube-kanji">天机</span>
+          <div class="bamboo-sticks" id="bambooSticks"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <div id="divineStickResult" class="divine-stick-result hidden">
+        <div class="stick-tag" id="stickGrade">大吉 · GREAT DESTINY</div>
+        <h3 id="stickPoem">「九天云开见真龙，万法归一入道宗」</h3>
+        <p id="stickEffect">Efek: Peluang mendapatkan kultivator rank tinggi +1.5% hari ini!</p>
+      </div>
+      <button type="button" id="shakeSticksBtn" class="divine-action-btn">GUNCANG TABUNG BAMBU 🎋</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Pagoda Sembilan Langit (Battle Arena) -->
+<div id="towerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="towerModalTitle">
+  <div class="modal-box tower-box">
+    <div class="modal-head"><h2 id="towerModalTitle">Pertarungan Pagoda Sembilan Langit</h2><button type="button" id="towerClose" class="x" aria-label="Tutup modal">✕</button></div>
+    <div class="tower-battle-arena">
+      <div class="battle-vs-bar">
+        <div class="side squad-side"><small>TIM KULTIVATOR</small><div class="hp-bar"><u id="squadHpBar" style="width:100%"></u></div><b id="squadHpTxt">100%</b></div>
+        <div class="vs-badge">VS</div>
+        <div class="side boss-side"><small id="battleBossName">BOSS</small><div class="hp-bar boss"><u id="bossHpBar" style="width:100%"></u></div><b id="bossHpTxt">100%</b></div>
+      </div>
+      <canvas id="towerCanvas" width="480" height="220"></canvas>
+      <div id="battleLog" class="battle-log">Pertarungan dimulai... Formasi Dao diaktifkan!</div>
+      <div id="battleResultWrap" class="battle-result-wrap hidden">
+        <h3 id="battleResultTitle">KEMENANGAN TELAK!</h3>
+        <p id="battleResultSub">Anda berhasil menaklukkan lantai pagoda ini.</p>
+        <button type="button" id="battleClaimBtn" class="continue gold">KLAIM HADIAH & LANJUT <span>✦</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="flash"></div><div id="toast" role="status" aria-live="polite"></div>
+<script src="audio.js"></script>
+<script src="script.js"></script>
+<script src="ritual.js"></script>
+<script src="visuals.js"></script>
+</body>
+</html>
